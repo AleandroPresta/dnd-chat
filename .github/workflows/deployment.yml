@@ -1,0 +1,78 @@
+name: GitHub Pages
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      # Set git identity explicitly
+      - name: Set Git Identity
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Install angular-cli-ghpages globally
+      - name: Install angular-cli-ghpages
+        run: npm install -g angular-cli-ghpages
+
+      - name: Build
+        run: npm run build -- --configuration production --base-href "https://aleandropresta.github.io/dnd-chat/"
+
+      # Check the directory structure after build
+      - name: Check build output structure
+        run: |
+          echo "==== Output directory structure ===="
+          ls -la dist/
+          ls -la dist/dnd-chat/ || echo "Directory not found"
+
+      # Move files from browser directory to expected location
+      - name: Prepare files for deployment
+        run: |
+          if [ -d "./dist/dnd-chat/browser" ]; then
+            echo "Moving files from browser directory"
+            cp -r ./dist/dnd-chat/browser/* ./dist/dnd-chat/
+            # Create a 404.html page before deployment if it doesn't exist
+            if [ -f "./dist/dnd-chat/index.html" ]; then
+              echo "Creating 404.html from index.html"
+              cp ./dist/dnd-chat/index.html ./dist/dnd-chat/404.html
+            fi
+            echo "==== Updated dist/dnd-chat directory ===="
+            ls -la dist/dnd-chat/
+          else
+            echo "No browser directory found"
+          fi
+
+      # Deploy using angular-cli-ghpages
+      - name: Deploy to GitHub Pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx angular-cli-ghpages \
+            --dir=dist/dnd-chat \
+            --repo="https://github.com/${{ github.repository }}.git" \
+            --name="GitHub Actions Bot" \
+            --email="github-actions[bot]@users.noreply.github.com" \
+            --no-silent
