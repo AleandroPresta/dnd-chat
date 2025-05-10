@@ -26,5 +26,5 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
       - run: npm ci
-      - run: npm run build --base-href=/notes-app/
+      - run: npm run build --base-href=/dnd-chat/
       - run: npm test
