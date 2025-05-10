@@ -1,0 +1,24 @@
+{
+  "prompts": [
+    {
+      "name": "Angular Code Generation",
+      "description": "Generate Angular components, services, or modules",
+      "prompt": "Create an Angular component/service/module according to best practices. Consider implementing: proper interfaces, dependency injection, modular design, and comprehensive unit tests. The application is a Dungeons & Dragons chat application that allows users to chat, manage characters, and roll dice."
+    },
+    {
+      "name": "DnD Feature Implementation",
+      "description": "Implement D&D game mechanics features",
+      "prompt": "Implement D&D game feature following 5th edition rules. Ensure accuracy to the official ruleset while maintaining good code structure and type safety in TypeScript. The feature should integrate with the rest of the application's components."
+    },
+    {
+      "name": "Unit Test Generation",
+      "description": "Generate unit tests for components and services",
+      "prompt": "Create comprehensive unit tests for the specified Angular component/service. Include tests for all public methods and edge cases. Use TestBed properly with mocked dependencies. Aim for high code coverage and follow testing best practices."
+    },
+    {
+      "name": "CSS/SCSS Styling",
+      "description": "Generate styled components with SCSS",
+      "prompt": "Create SCSS styling for this component that follows the project's fantasy/medieval design theme. Use a responsive design approach, with proper use of variables, mixins, and a modular structure. Ensure accessibility compliance and cross-browser compatibility."
+    }
+  ]
+}
