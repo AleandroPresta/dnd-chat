@@ -18,7 +18,7 @@ export class AuthService {
         private http: HttpClient
     ) {
         this.isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
-        
+
         // Only access localStorage in browser environment
         if (this.isBrowser) {
             // Check if there's a stored user in localStorage
@@ -38,7 +38,7 @@ export class AuthService {
                 if (response && response.jwt) {
                     // Store JWT token
                     const token = response.jwt;
-                    
+
                     // Create user object from JWT payload or additional user info if provided
                     // This is a simplified example, actual implementation may vary based on API
                     const user: User = {
@@ -53,19 +53,11 @@ export class AuthService {
                         localStorage.setItem('jwtToken', token);
                         localStorage.setItem('currentUser', JSON.stringify(user));
                     }
-                    
+
                     this.currentUserSubject.next(user);
                 }
             })
         );
-    }
-
-    register(email: string, password: string, username?: string): Observable<any> {
-        return this.http.post<any>(`${this.apiUrl}/auth/register`, {
-            email,
-            password,
-            username
-        });
     }
 
     logout(): void {
