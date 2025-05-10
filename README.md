@@ -1,58 +1,53 @@
-# DndChatApp
+# DnD Chat Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.11.
+An interactive chat application for Dungeons & Dragons players, built with Angular.
 
-## Development server
+## Features
 
-To start a local development server, run:
+- Real-time chat functionality
+- Character sheet management
+- Dice rolling mechanics
+- Game session management
 
-```bash
-ng serve
-```
+## Development Setup
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli).
 
-## Code scaffolding
+### Development server
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-```bash
-ng generate component component-name
-```
+### Code scaffolding
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-```bash
-ng generate --help
-```
+### Build
 
-## Building
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-To build the project run:
+### Running tests
 
-```bash
-ng build
-```
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## GitHub Workflow
 
-## Running unit tests
+This project includes a GitHub workflow that:
+- Builds the application
+- Runs tests
+- Validates code quality
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Branch Structure
 
-```bash
-ng test
-```
+- `main`: Production-ready code
+- `dev`: Development branch
 
-## Running end-to-end tests
+## Copilot Features
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+This project includes custom GitHub Copilot prompts to assist with:
+- Angular code generation
+- D&D feature implementation
+- Unit test creation
+- CSS/SCSS styling
 
 ## Additional Resources
 
