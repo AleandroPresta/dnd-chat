@@ -1,1 +1,4 @@
-<h1>Ciao Ciriaco!</h1>
+<div class="app-container">
+  <app-auth *ngIf="componentToShow === 'auth'" (authenticated)="onAuthenticated()"></app-auth>
+  <app-chat *ngIf="componentToShow === 'chat'" (logout)="onLogout()"></app-chat>
+</div>
