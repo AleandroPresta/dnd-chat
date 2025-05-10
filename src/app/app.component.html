@@ -1,4 +1,4 @@
-<div class="app-container">
-  <app-auth *ngIf="componentToShow === 'auth'" (authenticated)="onAuthenticated()"></app-auth>
-  <app-chat *ngIf="componentToShow === 'chat'" (logout)="onLogout()"></app-chat>
+<div class="min-h-screen bg-slate-100 flex items-center justify-center p-4">
+  <app-auth *ngIf="componentToShow === 'auth'" (authenticated)="onAuthenticated()" class="w-full max-w-md"></app-auth>
+  <app-chat *ngIf="componentToShow === 'chat'" (logout)="onLogout()" class="w-full max-w-4xl"></app-chat>
 </div>
