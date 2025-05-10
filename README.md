@@ -32,6 +32,7 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 ## GitHub Workflow
 
 This project includes a GitHub workflow that:
+
 - Builds the application
 - Runs tests
 - Validates code quality
@@ -44,6 +45,7 @@ This project includes a GitHub workflow that:
 ## Copilot Features
 
 This project includes custom GitHub Copilot prompts to assist with:
+
 - Angular code generation
 - D&D feature implementation
 - Unit test creation
