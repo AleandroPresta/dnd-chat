@@ -7,18 +7,14 @@ import { NgIf } from '@angular/common';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    AuthComponent,
-    ChatComponent,
-    NgIf
-  ],
+  imports: [AuthComponent, ChatComponent, NgIf],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
   componentToShow: 'auth' | 'chat' = 'chat'; // auth in production
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     // Check if user is already logged in

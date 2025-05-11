@@ -1,7 +1,9 @@
 <!-- D&D Chat Application -->
 <div class="flex h-screen bg-gray-50">
   <app-chat-error [error]="error" (closeError)="error = ''"></app-chat-error>
-  <div class="flex w-full h-full max-w-7xl mx-auto my-2 rounded-xl overflow-hidden shadow-lg border border-gray-200">
+  <div
+    class="mx-auto my-2 flex h-full w-full max-w-7xl overflow-hidden rounded-xl border border-gray-200 shadow-lg"
+  >
     <app-chat-sidebar
       [rooms]="rooms"
       [currentRoom]="currentRoom"
