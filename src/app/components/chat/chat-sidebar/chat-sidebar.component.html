@@ -6,79 +6,103 @@
     <!-- Create Room Button -->
     <div class="px-4 pb-2">
         <button
-            (click)="toggleCreateRoomForm()"
+            (click)="toggleCreateRoom()"
             class="w-full rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
             Create New Room
         </button>
     </div>
-    <!-- Create Room Modal Dialog -->
+    <!-- Create Room Dialog -->
     <div
-        *ngIf="showCreateRoomForm"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+        class="relative z-10"
+        aria-labelledby="modal-title"
+        role="dialog"
+        aria-modal="true"
     >
-        <div class="animate-fade-in-up relative mx-4 w-full max-w-md sm:mx-0">
+        <div
+            class="fixed inset-0 bg-gray-500/75 transition-opacity"
+            aria-hidden="true"
+        ></div>
+
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div
-                class="rounded-lg bg-slate-700 p-6 shadow-2xl ring-1 ring-black/10"
+                class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
             >
-                <div class="mb-4 flex items-center justify-between">
-                    <h2 class="text-lg font-semibold text-white">
-                        Create a New Room
-                    </h2>
-                    <button
-                        (click)="toggleCreateRoomForm()"
-                        class="text-slate-300 hover:text-white focus:outline-none"
-                        aria-label="Close modal"
+                <!--
+        Modal panel, show/hide based on modal state.
+
+        Entering: "ease-out duration-300"
+          From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+          To: "opacity-100 translate-y-0 sm:scale-100"
+        Leaving: "ease-in duration-200"
+          From: "opacity-100 translate-y-0 sm:scale-100"
+          To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+      -->
+                <div
+                    class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+                >
+                    <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div
+                                class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:size-10"
+                            >
+                                <svg
+                                    class="size-6 text-red-600"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    aria-hidden="true"
+                                    data-slot="icon"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+                                    />
+                                </svg>
+                            </div>
+                            <div
+                                class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left"
+                            >
+                                <h3
+                                    class="text-base font-semibold text-gray-900"
+                                    id="modal-title"
+                                >
+                                    Deactivate account
+                                </h3>
+                                <div class="mt-2">
+                                    <p class="text-sm text-gray-500">
+                                        Are you sure you want to deactivate your
+                                        account? All of your data will be
+                                        permanently removed. This action cannot
+                                        be undone.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"
                     >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"
-                            />
-                        </svg>
-                    </button>
-                </div>
-                <form [formGroup]="roomForm" (ngSubmit)="createRoom()">
-                    <input
-                        type="text"
-                        formControlName="name"
-                        placeholder="Room name"
-                        class="mb-2 w-full rounded-lg bg-slate-600 px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    />
-                    <input
-                        type="text"
-                        formControlName="description"
-                        placeholder="Description (optional)"
-                        class="mb-2 w-full rounded-lg bg-slate-600 px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    />
-                    <div class="mt-4 flex justify-end space-x-2">
                         <button
                             type="button"
-                            (click)="toggleCreateRoomForm()"
-                            class="rounded-lg bg-gray-500 px-3 py-1 text-xs text-white hover:bg-gray-600"
+                            class="shadow-xs inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white hover:bg-red-500 sm:ml-3 sm:w-auto"
+                        >
+                            Deactivate
+                        </button>
+                        <button
+                            type="button"
+                            class="shadow-xs mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                         >
                             Cancel
                         </button>
-                        <button
-                            type="submit"
-                            [disabled]="roomForm.invalid"
-                            class="rounded-lg bg-indigo-600 px-3 py-1 text-xs text-white hover:bg-indigo-700 disabled:bg-indigo-400"
-                        >
-                            Create
-                        </button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
+
     <!-- Search Bar -->
     <div class="px-4 pb-4">
         <div class="relative">
@@ -96,9 +120,6 @@
         >
             Chat Rooms
         </h3>
-        <div *ngIf="loading.rooms" class="text-xs text-slate-400">
-            Loading...
-        </div>
     </div>
     <!-- Room List with Scrolling -->
     <div class="message-container flex-1 overflow-y-auto px-2">
@@ -110,10 +131,7 @@
         >
             <div class="font-medium text-white">{{ room.name }}</div>
         </div>
-        <div
-            *ngIf="rooms.length === 0 && !loading.rooms"
-            class="py-4 text-center"
-        >
+        <div *ngIf="rooms.length === 0" class="py-4 text-center">
             <p class="text-sm text-slate-400">No rooms available</p>
             <p class="mt-1 text-xs text-slate-500">
                 Create a new room to get started
@@ -126,19 +144,9 @@
             <div class="flex items-center">
                 <div
                     class="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-500 text-white"
-                >
-                    {{
-                        authService.currentUser?.username?.charAt(0) ||
-                            authService.currentUser?.email?.charAt(0) ||
-                            '?'
-                    }}
-                </div>
+                ></div>
                 <span class="ml-2 truncate font-medium text-white">
-                    {{
-                        authService.currentUser?.username ||
-                            authService.currentUser?.email ||
-                            'Anonymous'
-                    }}
+                    {{ userFirstName }} {{ userLastName }}
                 </span>
             </div>
             <button
