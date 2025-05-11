@@ -1,22 +1,22 @@
 <!-- D&D Chat Application -->
 <div class="flex h-screen bg-gray-50">
-  <app-chat-error [error]="error" (closeError)="error = ''"></app-chat-error>
-  <div
-    class="mx-auto my-2 flex h-full w-full max-w-7xl overflow-hidden rounded-xl border border-gray-200 shadow-lg"
-  >
-    <app-chat-sidebar
-      [rooms]="rooms"
-      [currentRoom]="currentRoom"
-      [showCreateRoomForm]="showCreateRoomForm"
-      [roomForm]="roomForm"
-      [loading]="loading"
-      [authService]="authService"
-      (toggleCreateRoomForm)="toggleCreateRoomForm()"
-      (createRoom)="createRoom()"
-      (joinRoom)="joinRoom($event)"
-      (onLogout)="onLogout()"
-    ></app-chat-sidebar>
-    <app-chat-main
+    <app-chat-error [error]="error" (closeError)="error = ''"></app-chat-error>
+    <div
+        class="mx-auto my-2 flex h-full w-full max-w-7xl overflow-hidden rounded-xl border border-gray-200 shadow-lg"
+    >
+        <app-chat-sidebar
+            [rooms]="rooms"
+            [currentRoom]="currentRoom"
+            [showCreateRoomForm]="showCreateRoomForm"
+            [roomForm]="roomForm"
+            [loading]="loading"
+            [authService]="authService"
+            (toggleCreateRoomForm)="toggleCreateRoomForm()"
+            (createRoom)="createRoom()"
+            (joinRoom)="joinRoom($event)"
+            (onLogout)="onLogout()"
+        ></app-chat-sidebar>
+        <!--<app-chat-main
       [currentRoom]="currentRoom"
       [messages]="messages"
       [loading]="loading"
@@ -24,6 +24,6 @@
       [messageForm]="messageForm"
       (sendMessage)="sendMessage()"
       (leaveRoom)="leaveRoom()"
-    ></app-chat-main>
-  </div>
+    ></app-chat-main> -->
+    </div>
 </div>
