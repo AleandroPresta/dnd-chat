@@ -1,7 +1,6 @@
 <!-- D&D Chat Application -->
-<div class="flex h-[100vh] w-full bg-gray-50">
-    <app-chat-error [error]="error" (closeError)="error = ''"></app-chat-error>
-    <div class="flex">
+<div class="container bg-gray-50">
+    <div class="grid h-full w-full grid-cols-5">
         <app-chat-sidebar
             [rooms]="rooms"
             [currentRoom]="currentRoom"
@@ -13,6 +12,7 @@
             (createRoom)="createRoom()"
             (joinRoom)="joinRoom($event)"
             (onLogout)="onLogout()"
+            class="col-span-1"
         ></app-chat-sidebar>
         <app-chat-main
             [currentRoom]="currentRoom"
@@ -22,6 +22,7 @@
             [messageForm]="messageForm"
             (sendMessage)="sendMessage()"
             (leaveRoom)="leaveRoom()"
+            class="col-span-2"
         ></app-chat-main>
     </div>
 </div>
