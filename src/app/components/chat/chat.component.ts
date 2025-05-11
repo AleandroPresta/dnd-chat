@@ -10,13 +10,14 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ChatMainComponent } from './chat-main/chat-main.component';
 import { ChatErrorComponent } from './chat-error/chat-error.component';
+import { ChatSidebarComponent } from './chat-sidebar/chat-sidebar.component';
 
 @Component({
     selector: 'app-chat',
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, FormsModule, ChatErrorComponent, ChatMainComponent]
+    imports: [CommonModule, ReactiveFormsModule, FormsModule, ChatErrorComponent, ChatMainComponent, ChatSidebarComponent],
 })
 export class ChatComponent implements OnInit {
     @Output() logout = new EventEmitter<void>();
@@ -87,14 +88,14 @@ export class ChatComponent implements OnInit {
         });
     }
 
-    joinRoom(roomId: string): void {
+    joinRoom(event: any): void {
         this.loading.joinRoom = true;
-        this.chatService.joinRoom(roomId).subscribe({
+        this.chatService.joinRoom(event).subscribe({
             next: () => {
                 this.loading.joinRoom = false;
 
                 // Get room details and set it as current room
-                this.chatService.getChatRoom(roomId).subscribe(room => {
+                this.chatService.getChatRoom(event).subscribe(room => {
                     this.chatService.setCurrentRoom(room);
                 });
             },
