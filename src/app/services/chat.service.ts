@@ -134,7 +134,7 @@ export class ChatService {
     }
 
     // Join a chat room
-    joinRoom(roomId: string, userId: number): void {
+    joinRoom(roomId: number, userId: number): void {
         console.log(`User ${userId} joining room ${roomId}`);
     }
 

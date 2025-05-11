@@ -5,10 +5,11 @@
             [rooms]="rooms"
             [currentRoom]="currentRoom"
             [roomForm]="roomForm"
-            [authService]="authService"
             (createRoom)="createRoom()"
-            (joinRoom)="joinRoom($event, userId)"
             (onLogout)="onLogout()"
+            [userId]="userId"
+            [userFirstName]="userFirstName"
+            [userLastName]="userLastName"
             class="col-span-1"
         ></app-chat-sidebar>
         <!--<app-chat-main

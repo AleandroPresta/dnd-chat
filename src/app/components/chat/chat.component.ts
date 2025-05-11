@@ -34,7 +34,9 @@ export class ChatComponent implements OnInit {
     messageForm: FormGroup;
     roomForm: FormGroup;
     messagePolling?: Subscription;
-    @Input() userId: number = 1; // TODO: Replace with 0 in production
+    @Input() userId: number = 0;
+    @Input() userFirstName: string = '';
+    @Input() userLastName: string = '';
 
     constructor(
         private fb: FormBuilder,
@@ -82,10 +84,6 @@ export class ChatComponent implements OnInit {
                 console.error('Error loading rooms:', error);
             },
         });
-    }
-
-    joinRoom(event: any, userId: number): void {
-        this.chatService.joinRoom(event, userId);
     }
 
     loadMessages(roomId: number): void {

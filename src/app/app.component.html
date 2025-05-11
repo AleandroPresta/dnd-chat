@@ -8,6 +8,9 @@
     ></app-auth>
     <app-chat
         *ngIf="componentToShow === 'chat'"
+        [userId]="userId"
+        [userFirstName]="userFirstName"
+        [userLastName]="userLastName"
         (logout)="onLogout()"
         class="h-full w-full"
     ></app-chat>
