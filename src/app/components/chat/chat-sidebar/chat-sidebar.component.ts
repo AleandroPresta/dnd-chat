@@ -21,6 +21,8 @@ export class ChatSidebarComponent {
     @Input() userFirstName: string = '';
     @Input() userLastName: string = '';
 
+    showCreateRoomModal = false;
+
     constructor(private chatService: ChatService) {}
 
     joinRoom(roomId: number, userId: number) {
@@ -32,10 +34,13 @@ export class ChatSidebarComponent {
         // Add logic to handle user logout
     }
 
-    toggleCreateRoom() {}
+    toggleCreateRoom() {
+        this.showCreateRoomModal = !this.showCreateRoomModal;
+    }
 
     createRoom() {
         console.log('Creating a new room');
         // Add logic to handle creating a new room
+        this.showCreateRoomModal = false;
     }
 }
