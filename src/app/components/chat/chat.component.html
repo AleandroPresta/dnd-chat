@@ -1,6 +1,6 @@
 <!-- D&D Chat Application -->
-<div class="container bg-gray-50">
-    <div class="grid h-full w-full grid-cols-5">
+<div class="h-full bg-white">
+    <div class="grid h-full grid-cols-5">
         <app-chat-sidebar
             [rooms]="rooms"
             [currentRoom]="currentRoom"
@@ -22,7 +22,7 @@
             [messageForm]="messageForm"
             (sendMessage)="sendMessage()"
             (leaveRoom)="leaveRoom()"
-            class="col-span-2"
+            class="col-span-4"
         ></app-chat-main>
     </div>
 </div>

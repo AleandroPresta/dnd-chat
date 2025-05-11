@@ -1,5 +1,5 @@
 <div
-    class="container mx-auto flex h-screen w-full flex-col items-center justify-center"
+    class="container mx-auto flex h-screen w-full flex-col items-center justify-center bg-gray-50"
 >
     <app-auth
         *ngIf="componentToShow === 'auth'"
@@ -9,6 +9,6 @@
     <app-chat
         *ngIf="componentToShow === 'chat'"
         (logout)="onLogout()"
-        class=""
+        class="h-full w-full"
     ></app-chat>
 </div>
