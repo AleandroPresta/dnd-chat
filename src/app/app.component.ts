@@ -16,7 +16,7 @@ import { NgIf } from '@angular/common';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  componentToShow: 'auth' | 'chat' = 'auth';
+  componentToShow: 'auth' | 'chat' = 'chat'; // auth in production
 
   constructor(private authService: AuthService) { }
 
