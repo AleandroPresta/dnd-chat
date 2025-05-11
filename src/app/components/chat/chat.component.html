@@ -4,17 +4,14 @@
         <app-chat-sidebar
             [rooms]="rooms"
             [currentRoom]="currentRoom"
-            [showCreateRoomForm]="showCreateRoomForm"
             [roomForm]="roomForm"
-            [loading]="loading"
             [authService]="authService"
-            (toggleCreateRoomForm)="toggleCreateRoomForm()"
             (createRoom)="createRoom()"
-            (joinRoom)="joinRoom($event)"
+            (joinRoom)="joinRoom($event, userId)"
             (onLogout)="onLogout()"
             class="col-span-1"
         ></app-chat-sidebar>
-        <app-chat-main
+        <!--<app-chat-main
             [currentRoom]="currentRoom"
             [messages]="messages"
             [loading]="loading"
@@ -23,6 +20,6 @@
             (sendMessage)="sendMessage()"
             (leaveRoom)="leaveRoom()"
             class="hidden md:col-span-4 md:block"
-        ></app-chat-main>
+        ></app-chat-main> -->
     </div>
 </div>
