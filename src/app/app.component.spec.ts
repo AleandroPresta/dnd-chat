@@ -8,15 +8,12 @@ import { PLATFORM_ID } from '@angular/core';
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        AppComponent,
-        HttpClientTestingModule
-      ],
+      imports: [AppComponent, HttpClientTestingModule],
       providers: [
         AuthService,
         provideHttpClient(),
-        { provide: PLATFORM_ID, useValue: 'browser' }
-      ]
+        { provide: PLATFORM_ID, useValue: 'browser' },
+      ],
     }).compileComponents();
   });
 
