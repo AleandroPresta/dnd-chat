@@ -8,13 +8,15 @@ import { interval, Subscription } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ChatMainComponent } from './chat-main/chat-main.component';
+import { ChatErrorComponent } from './chat-error/chat-error.component';
 
 @Component({
     selector: 'app-chat',
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, FormsModule, DatePipe]
+    imports: [CommonModule, ReactiveFormsModule, FormsModule, ChatErrorComponent, ChatMainComponent]
 })
 export class ChatComponent implements OnInit {
     @Output() logout = new EventEmitter<void>();
