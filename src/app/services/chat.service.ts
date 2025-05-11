@@ -13,6 +13,31 @@ export class ChatService {
     private currentRoomSubject = new BehaviorSubject<ChatRoom | null>(null);
     public currentRoom$ = this.currentRoomSubject.asObservable();
 
+    mockChatRooms: Observable<ChatRoom[]> = new Observable((observer) => {
+        const mockRooms: ChatRoom[] = [
+            {
+                id: '1',
+                name: 'General',
+                description: 'General chat room',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                messages: [],
+                members: [],
+            },
+            {
+                id: '2',
+                name: 'Random',
+                description: 'Random chat room',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                messages: [],
+                members: [],
+            },
+        ];
+        observer.next(mockRooms);
+        observer.complete();
+    });
+
     constructor(
         private http: HttpClient,
         private authService: AuthService
@@ -20,10 +45,11 @@ export class ChatService {
 
     // Get all available chat rooms
     getChatRooms(): Observable<ChatRoom[]> {
-        return this.http.get<ChatRoom[]>(
+        return this.mockChatRooms;
+        /*return this.http.get<ChatRoom[]>(
             `${this.apiUrl}/chat/rooms`,
             this.getHttpOptions()
-        );
+        );*/
     }
 
     // Get specific chat room with messages
