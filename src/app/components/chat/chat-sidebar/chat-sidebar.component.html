@@ -105,13 +105,10 @@
         <div
             *ngFor="let room of rooms"
             [class.bg-slate-700]="currentRoom?.id === room.id"
-            (click)="joinRoom(room.id)"
+            (click)="joinRoom(room.id, userId)"
             class="mb-1 flex cursor-pointer flex-col rounded-lg p-2 transition-colors hover:bg-slate-700/70"
         >
             <div class="font-medium text-white">{{ room.name }}</div>
-            <div class="truncate text-xs text-slate-400">
-                {{ room.description || 'No description' }}
-            </div>
         </div>
         <div
             *ngIf="rooms.length === 0 && !loading.rooms"

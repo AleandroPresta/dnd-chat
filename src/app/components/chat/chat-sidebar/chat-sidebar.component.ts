@@ -24,8 +24,9 @@ export class ChatSidebarComponent {
     @Input() showCreateRoomForm: boolean = false;
     @Input() roomForm!: FormGroup; // TODO use the correct type
     @Input() authService: any; // TODO use the correct type
+    @Input() userId: number = 1; // TODO: Replace with 0 in production
 
-    joinRoom(roomId: string) {
+    joinRoom(roomId: number, userId: number) {
         console.log(`Joining room with ID: ${roomId}`);
         // Add logic to handle joining a room
     }
