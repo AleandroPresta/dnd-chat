@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ChatRoom } from '../../../models/chat-room.model';
 import { DatePipe, NgFor, NgIf } from '@angular/common';
+import { Message } from '../../../models/message.model';
+import { User } from '../../../models/user.model';
 
 @Component({
     selector: 'app-chat-main',
@@ -12,19 +13,21 @@ import { DatePipe, NgFor, NgIf } from '@angular/common';
 export class ChatMainComponent {
     // This component is responsible for the main chat interface
     // It will handle displaying messages, sending messages, and other chat-related functionalities
-
-    @Input() currentRoom: ChatRoom = {
-        id: 0,
-        name: '',
-        members: [],
-        messages: [],
-    };
     @Input() messageForm!: FormGroup;
-    @Input() userId: number = 0;
+    @Input() currentUser: User = {
+        id: 1,
+        firstName: '',
+        lastName: '',
+        email: '',
+    };
+    @Input() messages: Message[] = [];
 
     constructor() {}
 
-    sendMessage() {}
+    ngOnInit(): void {
+        console.log('[chat-main.component.ts] ngOnInit');
+        console.table(this.messages);
+    }
 
-    leaveRoom() {}
+    sendMessage() {}
 }

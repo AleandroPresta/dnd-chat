@@ -2,43 +2,31 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChatService } from '../../services/chat.service';
 import { AuthService } from '../../services/auth.service';
-import { ChatRoom } from '../../models/chat-room.model';
-import { interval, Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ChatMainComponent } from './chat-main/chat-main.component';
-import { ChatSidebarComponent } from './chat-sidebar/chat-sidebar.component';
+import { Message } from '../../models/message.model';
+import { User } from '../../models/user.model';
 
 @Component({
     selector: 'app-chat',
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
     standalone: true,
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        ChatMainComponent,
-        ChatSidebarComponent,
-    ],
+    imports: [CommonModule, ChatMainComponent],
 })
 export class ChatComponent implements OnInit {
     @Output() logout = new EventEmitter<void>();
 
-    rooms: ChatRoom[] = [];
-    currentRoom: ChatRoom = {
-        id: 0,
-        name: '',
-        members: [],
-        messages: [],
-    };
+    messages: Message[] = [];
+    // messagePolling: Subscription | undefined;
     messageForm: FormGroup;
-    roomForm: FormGroup;
-    messagePolling?: Subscription;
-    @Input() userId: number = 0;
-    @Input() userFirstName: string = '';
-    @Input() userLastName: string = '';
+    @Input() currentUser: User = {
+        id: 0,
+        firstName: '',
+        lastName: '',
+        email: '',
+    };
 
     constructor(
         private fb: FormBuilder,
@@ -48,81 +36,23 @@ export class ChatComponent implements OnInit {
         this.messageForm = this.fb.group({
             content: ['', Validators.required],
         });
-
-        this.roomForm = this.fb.group({
-            name: ['', Validators.required],
-            description: [''],
-        });
     }
 
     ngOnInit(): void {
-        this.loadRooms();
-
-        // Subscribe to current room changes
-        this.chatService.currentRoom$.subscribe((room) => {
-            if (room && room !== this.currentRoom) {
-                this.currentRoom = room;
-                this.loadMessages(room.id);
-
-                // Start polling for new messages
-                this.startMessagePolling(room.id);
-            } else if (!room) {
-                this.currentRoom = {
-                    id: 0,
-                    name: '',
-                    members: [],
-                    messages: [],
-                };
-                this.stopMessagePolling();
-            }
-        });
+        console.log('[chat.component.ts] ngOnInit');
+        this.messages = this.loadMessages();
+        // this.startMessagePolling(this.userId);
     }
 
     ngOnDestroy(): void {
-        this.stopMessagePolling();
+        // this.stopMessagePolling();
     }
 
-    loadRooms(): void {
-        this.chatService.getChatRooms().subscribe({
-            next: (rooms) => {
-                this.rooms = rooms;
-            },
-            error: (error) => {
-                console.error('Error loading rooms:', error);
-            },
-        });
-    }
-
-    loadMessages(roomId: number): void {
-        /* this.chatService.getMessages(roomId).subscribe({
-            next: (messages) => {
-                this.messages = messages;
-                this.loading.messages = false;
-                this.scrollToBottom();
-            },
-            error: (error) => {
-                this.error = 'Failed to load messages';
-                this.loading.messages = false;
-                console.error('Error loading messages:', error);
-            },
-        }); */
-        console.log('Loading messages for room:', roomId);
-    }
-
-    leaveRoom(): void {
-        /*if (this.currentRoom) {
-            this.chatService.leaveRoom(this.currentRoom.id).subscribe({
-                next: () => {
-                    this.chatService.clearCurrentRoom();
-                    this.loadRooms(); // Reload rooms to get updated membership status
-                },
-                error: (error) => {
-                    this.error = 'Failed to leave room';
-                    console.error('Error leaving room:', error);
-                },
-            });
-        } */
-        console.log('Leaving room:', this.currentRoom?.id);
+    loadMessages(): Message[] {
+        const messages = this.chatService.getMessages();
+        console.table(`[chat.component.ts] loadMessages:`);
+        console.table(messages);
+        return messages;
     }
 
     sendMessage(): void {
@@ -146,31 +76,12 @@ export class ChatComponent implements OnInit {
         console.log('Sending message:', this.messageForm.value.content);
     }
 
-    createRoom(): void {
-        /*if (this.roomForm.valid) {
-            const { name, description } = this.roomForm.value;
-
-            this.chatService.createRoom(name, description).subscribe({
-                next: (newRoom) => {
-                    this.rooms.push(newRoom);
-                    this.showCreateRoomForm = false;
-                    this.roomForm.reset();
-                },
-                error: (error) => {
-                    this.error = 'Failed to create room';
-                    console.error('Error creating room:', error);
-                },
-            });
-        } */
-        console.log('Creating room:', this.roomForm.value.name);
-    }
-
     onLogout(): void {
         this.authService.logout();
         this.logout.emit();
     }
 
-    private scrollToBottom(): void {
+    /* private scrollToBottom(): void {
         setTimeout(() => {
             const messageContainer =
                 document.querySelector('.message-container');
@@ -186,9 +97,9 @@ export class ChatComponent implements OnInit {
 
         // Poll for new messages every 5 seconds
         this.messagePolling = interval(5000)
-            .pipe(switchMap(() => this.chatService.getMessages(roomId)))
+            .pipe(switchMap(() => this.chatService.getMessages()))
             .subscribe((messages) => {
-                this.currentRoom.messages = messages;
+                this.messages = messages;
                 // Only scroll if we're already at the bottom
                 const messageContainer =
                     document.querySelector('.message-container');
@@ -202,12 +113,12 @@ export class ChatComponent implements OnInit {
                     }
                 }
             });
-    }
+    } */
 
-    private stopMessagePolling(): void {
+    /*private stopMessagePolling(): void {
         if (this.messagePolling) {
             this.messagePolling.unsubscribe();
             this.messagePolling = undefined;
         }
-    }
+    }*/
 }
