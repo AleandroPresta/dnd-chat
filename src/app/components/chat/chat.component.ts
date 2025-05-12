@@ -3,13 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChatService } from '../../services/chat.service';
 import { AuthService } from '../../services/auth.service';
 import { ChatRoom } from '../../models/chat-room.model';
-import { Message } from '../../models/message.model';
 import { interval, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ChatMainComponent } from './chat-main/chat-main.component';
-import { ChatErrorComponent } from './chat-error/chat-error.component';
 import { ChatSidebarComponent } from './chat-sidebar/chat-sidebar.component';
 
 @Component({
@@ -29,8 +27,12 @@ export class ChatComponent implements OnInit {
     @Output() logout = new EventEmitter<void>();
 
     rooms: ChatRoom[] = [];
-    currentRoom: ChatRoom | null = null;
-    messages: Message[] = [];
+    currentRoom: ChatRoom = {
+        id: 0,
+        name: '',
+        members: [],
+        messages: [],
+    };
     messageForm: FormGroup;
     roomForm: FormGroup;
     messagePolling?: Subscription;
@@ -65,7 +67,12 @@ export class ChatComponent implements OnInit {
                 // Start polling for new messages
                 this.startMessagePolling(room.id);
             } else if (!room) {
-                this.currentRoom = null;
+                this.currentRoom = {
+                    id: 0,
+                    name: '',
+                    members: [],
+                    messages: [],
+                };
                 this.stopMessagePolling();
             }
         });
@@ -181,7 +188,7 @@ export class ChatComponent implements OnInit {
         this.messagePolling = interval(5000)
             .pipe(switchMap(() => this.chatService.getMessages(roomId)))
             .subscribe((messages) => {
-                this.messages = messages;
+                this.currentRoom.messages = messages;
                 // Only scroll if we're already at the bottom
                 const messageContainer =
                     document.querySelector('.message-container');

@@ -13,11 +13,14 @@ export class ChatMainComponent {
     // This component is responsible for the main chat interface
     // It will handle displaying messages, sending messages, and other chat-related functionalities
 
-    @Input() currentRoom!: ChatRoom | null;
-    @Input() messages!: any[];
-    @Input() loading!: any; // TODO use the correct type
-    @Input() authService!: any;
+    @Input() currentRoom: ChatRoom = {
+        id: 0,
+        name: '',
+        members: [],
+        messages: [],
+    };
     @Input() messageForm!: FormGroup;
+    @Input() userId: number = 0;
 
     constructor() {}
 
