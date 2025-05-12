@@ -13,7 +13,7 @@ import { User } from './models/user.model';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-    componentToShow: 'auth' | 'chat' = 'chat'; // auth in production
+    componentToShow: 'auth' | 'chat' = 'auth'; // auth in production
     currentUser: User = {
         id: 1,
         first_name: 'Alice',
