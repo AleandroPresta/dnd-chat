@@ -20,13 +20,13 @@ export class ChatService {
                 id: 1,
                 content: 'Hello, how are you?',
                 senderId: 1,
-                timestamp: new Date(),
+                createdAt: new Date(),
             },
             {
                 id: 2,
                 content: 'I am fine, thank you!',
                 senderId: 2,
-                timestamp: new Date(),
+                createdAt: new Date(),
             },
         ];
     }

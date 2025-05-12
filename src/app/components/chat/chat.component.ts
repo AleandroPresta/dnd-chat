@@ -4,16 +4,16 @@ import { ChatService } from '../../services/chat.service';
 import { AuthService } from '../../services/auth.service';
 
 import { CommonModule } from '@angular/common';
-import { ChatMainComponent } from './chat-main/chat-main.component';
 import { Message } from '../../models/message.model';
 import { User } from '../../models/user.model';
+import { MessageFormComponent } from './message-form/message-form.component';
 
 @Component({
     selector: 'app-chat',
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
     standalone: true,
-    imports: [CommonModule, ChatMainComponent],
+    imports: [CommonModule, MessageFormComponent],
 })
 export class ChatComponent implements OnInit {
     @Output() logout = new EventEmitter<void>();
@@ -44,10 +44,6 @@ export class ChatComponent implements OnInit {
         // this.startMessagePolling(this.userId);
     }
 
-    ngOnDestroy(): void {
-        // this.stopMessagePolling();
-    }
-
     loadMessages(): Message[] {
         const messages = this.chatService.getMessages();
         console.table(`[chat.component.ts] loadMessages:`);
@@ -55,30 +51,19 @@ export class ChatComponent implements OnInit {
         return messages;
     }
 
-    sendMessage(): void {
-        /*if (this.messageForm.valid && this.currentRoom) {
-            const content = this.messageForm.value.content;
-
-            this.chatService
-                .sendMessage(this.currentRoom.id, content)
-                .subscribe({
-                    next: (newMessage) => {
-                        this.messages.push(newMessage);
-                        this.messageForm.reset();
-                        this.scrollToBottom();
-                    },
-                    error: (error) => {
-                        this.error = 'Failed to send message';
-                        console.error('Error sending message:', error);
-                    },
-                });
-        } */
-        console.log('Sending message:', this.messageForm.value.content);
+    onSendMessage(message: Message): void {
+        console.log(`[chat.component.ts] onSendMessage:`);
+        console.table(message);
+        this.messages.push(message);
     }
 
     onLogout(): void {
         this.authService.logout();
         this.logout.emit();
+    }
+
+    trackByMessageId(index: number, message: Message) {
+        return message.id;
     }
 
     /* private scrollToBottom(): void {
