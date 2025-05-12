@@ -44,8 +44,8 @@ export class AuthService {
                         const user: User = {
                             id: response.user?.id || 'user_id',
                             email: email,
-                            username:
-                                response.user?.username || email.split('@')[0],
+                            firstName: response.user?.first_name || 'John',
+                            lastName: response.user?.last_name || 'Doe',
                             token: token,
                         };
 

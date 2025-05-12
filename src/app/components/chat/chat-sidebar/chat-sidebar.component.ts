@@ -1,7 +1,8 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ChatRoom } from '../../../models/chat-room.model';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgFor, NgIf } from '@angular/common';
+import { ChatService } from '../../../services/chat.service';
 
 @Component({
     selector: 'app-chat-sidebar',
@@ -15,19 +16,17 @@ export class ChatSidebarComponent {
 
     @Input() rooms: ChatRoom[] = [];
     @Input() currentRoom: ChatRoom | null = null;
-    @Input() loading: { rooms: boolean; messages: boolean; joinRoom: boolean } =
-        {
-            rooms: false,
-            messages: false,
-            joinRoom: false,
-        };
-    @Input() showCreateRoomForm: boolean = false;
     @Input() roomForm!: FormGroup; // TODO use the correct type
-    @Input() authService: any; // TODO use the correct type
+    @Input() userId: number = 0;
+    @Input() userFirstName: string = '';
+    @Input() userLastName: string = '';
 
-    joinRoom(roomId: string) {
-        console.log(`Joining room with ID: ${roomId}`);
-        // Add logic to handle joining a room
+    showCreateRoomModal = false;
+
+    constructor(private chatService: ChatService) {}
+
+    joinRoom(roomId: number, userId: number) {
+        this.chatService.joinRoom(roomId, userId);
     }
 
     onLogout() {
@@ -35,16 +34,13 @@ export class ChatSidebarComponent {
         // Add logic to handle user logout
     }
 
-    toggleCreateRoomForm() {
-        this.showCreateRoomForm = !this.showCreateRoomForm;
-        console.log(`Toggled create room form: ${this.showCreateRoomForm}`);
-        // Add logic to handle toggling the create room form
+    toggleCreateRoom() {
+        this.showCreateRoomModal = !this.showCreateRoomModal;
     }
 
     createRoom() {
         console.log('Creating a new room');
         // Add logic to handle creating a new room
+        this.showCreateRoomModal = false;
     }
-
-    constructor() {}
 }

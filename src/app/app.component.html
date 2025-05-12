@@ -1,12 +1,17 @@
-<div class="flex min-h-screen items-center justify-center bg-slate-100">
+<div
+    class="mx-auto flex h-screen w-full flex-col items-center justify-center bg-gray-50 2xl:container"
+>
     <app-auth
         *ngIf="componentToShow === 'auth'"
         (authenticated)="onAuthenticated()"
-        class="w-full max-w-md"
+        class=""
     ></app-auth>
     <app-chat
         *ngIf="componentToShow === 'chat'"
+        [userId]="userId"
+        [userFirstName]="userFirstName"
+        [userLastName]="userLastName"
         (logout)="onLogout()"
-        class="w-full max-w-4xl"
+        class="h-full w-full"
     ></app-chat>
 </div>

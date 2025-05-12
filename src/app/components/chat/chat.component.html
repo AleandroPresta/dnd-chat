@@ -1,29 +1,26 @@
 <!-- D&D Chat Application -->
-<div class="flex h-screen bg-gray-50">
-    <app-chat-error [error]="error" (closeError)="error = ''"></app-chat-error>
-    <div
-        class="mx-auto my-2 flex h-full w-full max-w-7xl overflow-hidden rounded-xl border border-gray-200 shadow-lg"
-    >
+<div class="h-full bg-white">
+    <div class="h-full md:grid md:grid-cols-5">
         <app-chat-sidebar
             [rooms]="rooms"
             [currentRoom]="currentRoom"
-            [showCreateRoomForm]="showCreateRoomForm"
             [roomForm]="roomForm"
-            [loading]="loading"
-            [authService]="authService"
-            (toggleCreateRoomForm)="toggleCreateRoomForm()"
             (createRoom)="createRoom()"
-            (joinRoom)="joinRoom($event)"
             (onLogout)="onLogout()"
+            [userId]="userId"
+            [userFirstName]="userFirstName"
+            [userLastName]="userLastName"
+            class="col-span-1"
         ></app-chat-sidebar>
         <!--<app-chat-main
-      [currentRoom]="currentRoom"
-      [messages]="messages"
-      [loading]="loading"
-      [authService]="authService"
-      [messageForm]="messageForm"
-      (sendMessage)="sendMessage()"
-      (leaveRoom)="leaveRoom()"
-    ></app-chat-main> -->
+            [currentRoom]="currentRoom"
+            [messages]="messages"
+            [loading]="loading"
+            [authService]="authService"
+            [messageForm]="messageForm"
+            (sendMessage)="sendMessage()"
+            (leaveRoom)="leaveRoom()"
+            class="hidden md:col-span-4 md:block"
+        ></app-chat-main> -->
     </div>
 </div>
