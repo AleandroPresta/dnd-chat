@@ -1,9 +1,8 @@
 import { User } from './user.model';
 
 export interface Message {
-    id: string;
+    id?: number;
     content: string;
-    sender: User;
-    roomId: string;
-    timestamp: Date;
+    user_id: number;
+    created_at: Date;
 }
