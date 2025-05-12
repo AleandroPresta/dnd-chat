@@ -16,8 +16,8 @@ export class AppComponent implements OnInit {
     componentToShow: 'auth' | 'chat' = 'chat'; // auth in production
     currentUser: User = {
         id: 1,
-        firstName: 'Alice',
-        lastName: 'Smith',
+        first_name: 'Alice',
+        last_name: 'Smith',
         email: 'alice@smith.com',
     };
 

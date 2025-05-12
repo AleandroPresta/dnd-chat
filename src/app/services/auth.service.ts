@@ -9,7 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
     providedIn: 'root',
 })
 export class AuthService {
-    private API_URL = 'https://x8ki-letl-twmt.n7.xano.io/api:Y6FZ87f5/auth';
+    private API_URL = 'https://x8ki-letl-twmt.n7.xano.io/api:Y6FZ87f5';
     private currentUserSubject = new BehaviorSubject<User | null>(null);
     public currentUser$ = this.currentUserSubject.asObservable();
     private isBrowser: boolean;
@@ -32,7 +32,7 @@ export class AuthService {
 
     login(email: string, password: string): Observable<any> {
         return this.http
-            .post<any>(`${this.API_URL}/login`, { email, password })
+            .post<any>(`${this.API_URL}/auth/login`, { email, password })
             .pipe(
                 tap((response) => {
                     if (response && response.jwt) {
@@ -44,8 +44,8 @@ export class AuthService {
                         const user: User = {
                             id: response.user?.id || 0,
                             email: email,
-                            firstName: response.user?.first_name || '',
-                            lastName: response.user?.last_name || '',
+                            first_name: response.user?.first_name || '',
+                            last_name: response.user?.last_name || '',
                             token: token,
                         };
 
