@@ -22,10 +22,7 @@ export class MessageComponent {
             return;
         }
         // Fetch user data based on user_id
-        console.log(
-            '[message.component.ts] fetching user data with id:',
-            this.message.user_id
-        );
+        console.log(this.message.user_id);
         this.authService.getUserById(this.message.user_id).subscribe((user) => {
             console.log(user.first_name, user.last_name);
             this.userFirstName = user.first_name;

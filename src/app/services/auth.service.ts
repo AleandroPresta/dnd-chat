@@ -90,6 +90,7 @@ export class AuthService {
 
     getUserById(userId: number): Observable<User> {
         if (this.userCache.has(userId)) {
+            console.log(`[AuthService] User with ID ${userId} found in cache.`);
             // Return cached user as an observable
             return new Observable<User>((observer) => {
                 observer.next(this.userCache.get(userId)!);
