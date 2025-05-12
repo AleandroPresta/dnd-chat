@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
     templateUrl: './auth.component.html',
     styleUrls: ['./auth.component.scss'],
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, FormsModule]
+    imports: [CommonModule, ReactiveFormsModule, FormsModule],
 })
 export class AuthComponent {
     loginForm: FormGroup;
@@ -24,7 +24,7 @@ export class AuthComponent {
     ) {
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
-            password: ['', [Validators.required, Validators.minLength(6)]]
+            password: ['', [Validators.required, Validators.minLength(6)]],
         });
     }
 
@@ -40,9 +40,11 @@ export class AuthComponent {
                     this.authenticated.emit();
                 },
                 error: (error) => {
-                    this.error = error.error?.message || 'Login failed. Please try again.';
+                    this.error =
+                        error.error?.message ||
+                        'Login failed. Please try again.';
                     this.loading = false;
-                }
+                },
             });
         }
     }

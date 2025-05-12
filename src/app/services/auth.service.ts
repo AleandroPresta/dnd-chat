@@ -4,19 +4,26 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../models/user.model';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import {
+    catchError,
+    delay,
+    retryWhen,
+    switchMap,
+    throwError,
+    timer,
+} from 'rxjs';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class AuthService {
-    private apiUrl = 'https://x8ki-letl-twmt.n7.xano.io/api:Y6FZ87f5';
+    private API_URL = 'https://x8ki-letl-twmt.n7.xano.io/api:Y6FZ87f5';
     private currentUserSubject = new BehaviorSubject<User | null>(null);
     public currentUser$ = this.currentUserSubject.asObservable();
     private isBrowser: boolean;
+    private userCache = new Map<number, User>();
 
-    constructor(
-        private http: HttpClient
-    ) {
+    constructor(private http: HttpClient) {
         this.isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
         // Only access localStorage in browser environment
@@ -33,31 +40,51 @@ export class AuthService {
     }
 
     login(email: string, password: string): Observable<any> {
-        return this.http.post<any>(`${this.apiUrl}/auth/login`, { email, password }).pipe(
-            tap(response => {
-                if (response && response.jwt) {
-                    // Store JWT token
-                    const token = response.jwt;
+        return this.http
+            .post<any>(`${this.API_URL}/auth/login`, { email, password })
+            .pipe(
+                retryWhen((errors) =>
+                    errors.pipe(
+                        switchMap((error) => {
+                            if (
+                                error?.error?.code ===
+                                'ERROR_CODE_TOO_MANY_REQUESTS'
+                            ) {
+                                console.log('Waiting API limit');
+                                return timer(20000); // wait 20 seconds
+                            }
+                            return throwError(() => error);
+                        })
+                    )
+                ),
+                tap((response) => {
+                    if (response && response.jwt) {
+                        // Store JWT token
+                        const token = response.jwt;
 
-                    // Create user object from JWT payload or additional user info if provided
-                    // This is a simplified example, actual implementation may vary based on API
-                    const user: User = {
-                        id: response.user?.id || 'user_id',
-                        email: email,
-                        username: response.user?.username || email.split('@')[0],
-                        token: token
-                    };
+                        // Create user object from JWT payload or additional user info if provided
+                        // This is a simplified example, actual implementation may vary based on API
+                        const user: User = {
+                            id: response.user?.id || 0,
+                            email: email,
+                            first_name: response.user?.first_name || '',
+                            last_name: response.user?.last_name || '',
+                            token: token,
+                        };
 
-                    // Only store in localStorage if in browser environment
-                    if (this.isBrowser) {
-                        localStorage.setItem('jwtToken', token);
-                        localStorage.setItem('currentUser', JSON.stringify(user));
+                        // Only store in localStorage if in browser environment
+                        if (this.isBrowser) {
+                            localStorage.setItem('jwtToken', token);
+                            localStorage.setItem(
+                                'currentUser',
+                                JSON.stringify(user)
+                            );
+                        }
+
+                        this.currentUserSubject.next(user);
                     }
-
-                    this.currentUserSubject.next(user);
-                }
-            })
-        );
+                })
+            );
     }
 
     logout(): void {
@@ -73,11 +100,43 @@ export class AuthService {
     }
 
     get isLoggedIn(): boolean {
-        const hasToken = this.isBrowser ? !!localStorage.getItem('jwtToken') : false;
+        const hasToken = this.isBrowser
+            ? !!localStorage.getItem('jwtToken')
+            : false;
         return !!this.currentUserSubject.value && hasToken;
     }
 
     get token(): string | null {
         return this.isBrowser ? localStorage.getItem('jwtToken') : null;
+    }
+
+    getUserById(userId: number): Observable<User> {
+        if (this.userCache.has(userId)) {
+            // Return cached user as an observable
+            return new Observable<User>((observer) => {
+                observer.next(this.userCache.get(userId)!);
+                observer.complete();
+            });
+        } else {
+            return this.http.get<User>(`${this.API_URL}/user/${userId}`).pipe(
+                retryWhen((errors) =>
+                    errors.pipe(
+                        switchMap((error) => {
+                            if (
+                                error?.error?.code ===
+                                'ERROR_CODE_TOO_MANY_REQUESTS'
+                            ) {
+                                console.log('Waiting API limit');
+                                return timer(20000); // wait 20 seconds
+                            }
+                            return throwError(() => error);
+                        })
+                    )
+                ),
+                tap((user) => {
+                    this.userCache.set(userId, user);
+                })
+            );
+        }
     }
 }
