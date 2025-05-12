@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../models/user.model';
+import { PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
     providedIn: 'root',
@@ -11,15 +13,21 @@ export class AuthService {
         'https://x8ki-letl-twmt.n7.xano.io/api:Y6FZ87f5/auth/login';
     private currentUserSubject = new BehaviorSubject<User | null>(null);
     public currentUser$ = this.currentUserSubject.asObservable();
+    private isBrowser: boolean;
 
     constructor(private http: HttpClient) {
-        // Check if there's a stored user in localStorage
-        const savedUser = localStorage.getItem('currentUser');
-        const savedToken = localStorage.getItem('jwtToken');
-        if (savedUser && savedToken) {
-            const user = JSON.parse(savedUser);
-            user.token = savedToken;
-            this.currentUserSubject.next(user);
+        this.isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+
+        // Only access localStorage in browser environment
+        if (this.isBrowser) {
+            // Check if there's a stored user in localStorage
+            const savedUser = localStorage.getItem('currentUser');
+            const savedToken = localStorage.getItem('jwtToken');
+            if (savedUser && savedToken) {
+                const user = JSON.parse(savedUser);
+                user.token = savedToken;
+                this.currentUserSubject.next(user);
+            }
         }
     }
 
@@ -40,8 +48,14 @@ export class AuthService {
                         token: token,
                     };
 
-                    localStorage.setItem('jwtToken', token);
-                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    // Only store in localStorage if in browser environment
+                    if (this.isBrowser) {
+                        localStorage.setItem('jwtToken', token);
+                        localStorage.setItem(
+                            'currentUser',
+                            JSON.stringify(user)
+                        );
+                    }
 
                     this.currentUserSubject.next(user);
                 }
@@ -50,8 +64,10 @@ export class AuthService {
     }
 
     logout(): void {
-        localStorage.removeItem('currentUser');
-        localStorage.removeItem('jwtToken');
+        if (this.isBrowser) {
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('jwtToken');
+        }
         this.currentUserSubject.next(null);
     }
 
@@ -60,11 +76,13 @@ export class AuthService {
     }
 
     get isLoggedIn(): boolean {
-        const hasToken = !!localStorage.getItem('jwtToken');
+        const hasToken = this.isBrowser
+            ? !!localStorage.getItem('jwtToken')
+            : false;
         return !!this.currentUserSubject.value && hasToken;
     }
 
     get token(): string | null {
-        return localStorage.getItem('jwtToken');
+        return this.isBrowser ? localStorage.getItem('jwtToken') : null;
     }
 }
