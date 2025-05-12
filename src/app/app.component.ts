@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { AuthComponent } from './components/auth/auth.component';
 import { ChatComponent } from './components/chat/chat.component';
@@ -13,6 +13,9 @@ import { NgIf } from '@angular/common';
 })
 export class AppComponent implements OnInit {
     componentToShow: 'auth' | 'chat' = 'chat'; // auth in production
+    @Input() userId: number = 1; // TODO: Replace with 0 in production
+    @Input() userFirstName: string = 'Alice'; // TODO: Replace with '' in production
+    @Input() userLastName: string = 'Smith'; // TODO: Replace with '' in production
 
     constructor(private authService: AuthService) {}
 

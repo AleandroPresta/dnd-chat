@@ -1,12 +1,12 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChatService } from '../../services/chat.service';
 import { AuthService } from '../../services/auth.service';
 import { ChatRoom } from '../../models/chat-room.model';
 import { Message } from '../../models/message.model';
 import { interval, Subscription } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
-import { CommonModule, DatePipe } from '@angular/common';
+import { switchMap } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ChatMainComponent } from './chat-main/chat-main.component';
 import { ChatErrorComponent } from './chat-error/chat-error.component';
@@ -21,7 +21,6 @@ import { ChatSidebarComponent } from './chat-sidebar/chat-sidebar.component';
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
-        ChatErrorComponent,
         ChatMainComponent,
         ChatSidebarComponent,
     ],
@@ -34,14 +33,10 @@ export class ChatComponent implements OnInit {
     messages: Message[] = [];
     messageForm: FormGroup;
     roomForm: FormGroup;
-    showCreateRoomForm = false;
-    loading = {
-        rooms: false,
-        messages: false,
-        joinRoom: false,
-    };
-    error: string = '';
     messagePolling?: Subscription;
+    @Input() userId: number = 0;
+    @Input() userFirstName: string = '';
+    @Input() userLastName: string = '';
 
     constructor(
         private fb: FormBuilder,
@@ -81,57 +76,18 @@ export class ChatComponent implements OnInit {
     }
 
     loadRooms(): void {
-        this.loading.rooms = true;
         this.chatService.getChatRooms().subscribe({
             next: (rooms) => {
                 this.rooms = rooms;
-                this.loading.rooms = false;
             },
             error: (error) => {
-                this.error = 'Failed to load chat rooms';
-                this.loading.rooms = false;
                 console.error('Error loading rooms:', error);
             },
         });
     }
 
-    joinRoom(event: any): void {
-        this.loading.joinRoom = true;
-        this.chatService.joinRoom(event).subscribe({
-            next: () => {
-                this.loading.joinRoom = false;
-
-                // Get room details and set it as current room
-                this.chatService.getChatRoom(event).subscribe((room) => {
-                    this.chatService.setCurrentRoom(room);
-                });
-            },
-            error: (error) => {
-                this.error = 'Failed to join room';
-                this.loading.joinRoom = false;
-                console.error('Error joining room:', error);
-            },
-        });
-    }
-
-    leaveRoom(): void {
-        if (this.currentRoom) {
-            this.chatService.leaveRoom(this.currentRoom.id).subscribe({
-                next: () => {
-                    this.chatService.clearCurrentRoom();
-                    this.loadRooms(); // Reload rooms to get updated membership status
-                },
-                error: (error) => {
-                    this.error = 'Failed to leave room';
-                    console.error('Error leaving room:', error);
-                },
-            });
-        }
-    }
-
-    loadMessages(roomId: string): void {
-        this.loading.messages = true;
-        this.chatService.getMessages(roomId).subscribe({
+    loadMessages(roomId: number): void {
+        /* this.chatService.getMessages(roomId).subscribe({
             next: (messages) => {
                 this.messages = messages;
                 this.loading.messages = false;
@@ -142,11 +98,28 @@ export class ChatComponent implements OnInit {
                 this.loading.messages = false;
                 console.error('Error loading messages:', error);
             },
-        });
+        }); */
+        console.log('Loading messages for room:', roomId);
+    }
+
+    leaveRoom(): void {
+        /*if (this.currentRoom) {
+            this.chatService.leaveRoom(this.currentRoom.id).subscribe({
+                next: () => {
+                    this.chatService.clearCurrentRoom();
+                    this.loadRooms(); // Reload rooms to get updated membership status
+                },
+                error: (error) => {
+                    this.error = 'Failed to leave room';
+                    console.error('Error leaving room:', error);
+                },
+            });
+        } */
+        console.log('Leaving room:', this.currentRoom?.id);
     }
 
     sendMessage(): void {
-        if (this.messageForm.valid && this.currentRoom) {
+        /*if (this.messageForm.valid && this.currentRoom) {
             const content = this.messageForm.value.content;
 
             this.chatService
@@ -162,11 +135,12 @@ export class ChatComponent implements OnInit {
                         console.error('Error sending message:', error);
                     },
                 });
-        }
+        } */
+        console.log('Sending message:', this.messageForm.value.content);
     }
 
     createRoom(): void {
-        if (this.roomForm.valid) {
+        /*if (this.roomForm.valid) {
             const { name, description } = this.roomForm.value;
 
             this.chatService.createRoom(name, description).subscribe({
@@ -180,14 +154,8 @@ export class ChatComponent implements OnInit {
                     console.error('Error creating room:', error);
                 },
             });
-        }
-    }
-
-    toggleCreateRoomForm(): void {
-        this.showCreateRoomForm = !this.showCreateRoomForm;
-        if (!this.showCreateRoomForm) {
-            this.roomForm.reset();
-        }
+        } */
+        console.log('Creating room:', this.roomForm.value.name);
     }
 
     onLogout(): void {
@@ -205,7 +173,7 @@ export class ChatComponent implements OnInit {
         }, 100);
     }
 
-    private startMessagePolling(roomId: string): void {
+    private startMessagePolling(roomId: number): void {
         // Stop any existing polling
         this.stopMessagePolling();
 
