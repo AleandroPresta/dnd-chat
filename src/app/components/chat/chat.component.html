@@ -1,9 +1,5 @@
-<!-- D&D Chat Application -->
 <div class="h-full bg-white">
-    <div class="h-full">
-        <app-chat-main
-            [currentUser]="currentUser"
-            (sendMessage)="sendMessage()"
-        ></app-chat-main>
-    </div>
+    <ng-container *ngFor="let message of messages; trackBy: trackByMessageId">
+    </ng-container>
+    <app-message-form (messageSent)="onSendMessage($event)"></app-message-form>
 </div>
