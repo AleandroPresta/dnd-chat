@@ -4,6 +4,14 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../models/user.model';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import {
+    catchError,
+    delay,
+    retryWhen,
+    switchMap,
+    throwError,
+    timer,
+} from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -35,6 +43,20 @@ export class AuthService {
         return this.http
             .post<any>(`${this.API_URL}/auth/login`, { email, password })
             .pipe(
+                retryWhen((errors) =>
+                    errors.pipe(
+                        switchMap((error) => {
+                            if (
+                                error?.error?.code ===
+                                'ERROR_CODE_TOO_MANY_REQUESTS'
+                            ) {
+                                console.log('Waiting API limit');
+                                return timer(20000); // wait 20 seconds
+                            }
+                            return throwError(() => error);
+                        })
+                    )
+                ),
                 tap((response) => {
                     if (response && response.jwt) {
                         // Store JWT token
@@ -97,6 +119,20 @@ export class AuthService {
             });
         } else {
             return this.http.get<User>(`${this.API_URL}/user/${userId}`).pipe(
+                retryWhen((errors) =>
+                    errors.pipe(
+                        switchMap((error) => {
+                            if (
+                                error?.error?.code ===
+                                'ERROR_CODE_TOO_MANY_REQUESTS'
+                            ) {
+                                console.log('Waiting API limit');
+                                return timer(20000); // wait 20 seconds
+                            }
+                            return throwError(() => error);
+                        })
+                    )
+                ),
                 tap((user) => {
                     this.userCache.set(userId, user);
                 })
