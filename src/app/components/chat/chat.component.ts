@@ -51,8 +51,20 @@ export class ChatComponent implements OnInit {
         });
     }
 
-    onSendMessage(message: Message): void {
-        this.messages.push(message);
+    onSendMessage(messageContent: string): void {
+        if (!messageContent || !this.currentUser.id) {
+            console.error('Message content is empty or user is not logged in.');
+            return;
+        }
+        const newMessage: Message = {
+            content: messageContent,
+            user_id: this.currentUser.id,
+            created_at: new Date(),
+        };
+        this.messages.push(newMessage);
+        this.chatService.sendMessage(newMessage).subscribe((response) => {
+            console.log('Message sent successfully:', response);
+        });
     }
 
     onLogout(): void {
