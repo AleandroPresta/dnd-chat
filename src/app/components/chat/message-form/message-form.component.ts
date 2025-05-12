@@ -17,15 +17,6 @@ export class MessageFormComponent {
         if (!this.message.value) {
             return;
         }
-        const content = this.message.value.trim();
-        if (content.trim()) {
-            const message: Message = {
-                id: Date.now(),
-                content,
-                user_id: 1, // TODO Replace with actual sender ID
-                created_at: new Date(),
-            };
-            this.messageSent.emit(message);
-        }
+        console.log(this.message.value);
     }
 }
