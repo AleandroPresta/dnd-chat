@@ -40,15 +40,15 @@ export class ChatComponent implements OnInit {
 
     ngOnInit(): void {
         console.log('[chat.component.ts] ngOnInit');
-        this.messages = this.loadMessages();
+        this.loadMessages();
         // this.startMessagePolling(this.userId);
     }
 
-    loadMessages(): Message[] {
-        const messages = this.chatService.getMessages();
-        console.table(`[chat.component.ts] loadMessages:`);
-        console.table(messages);
-        return messages;
+    loadMessages() {
+        this.chatService.getMessages().subscribe((messages) => {
+            this.messages = messages;
+            // this.scrollToBottom();
+        });
     }
 
     onSendMessage(message: Message): void {
