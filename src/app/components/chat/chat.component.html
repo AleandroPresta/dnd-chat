@@ -3,7 +3,7 @@
     <div class="h-full md:grid md:grid-cols-5">
         <app-chat-sidebar
             [rooms]="rooms"
-            [currentRoom]="currentRoom"
+            [currentRoomId]="currentRoom.id"
             [roomForm]="roomForm"
             (createRoom)="createRoom()"
             (onLogout)="onLogout()"
@@ -12,15 +12,13 @@
             [userLastName]="userLastName"
             class="col-span-1"
         ></app-chat-sidebar>
-        <!--<app-chat-main
+        <app-chat-main
             [currentRoom]="currentRoom"
-            [messages]="messages"
-            [loading]="loading"
-            [authService]="authService"
+            [userId]="userId"
             [messageForm]="messageForm"
             (sendMessage)="sendMessage()"
             (leaveRoom)="leaveRoom()"
             class="hidden md:col-span-4 md:block"
-        ></app-chat-main> -->
+        ></app-chat-main>
     </div>
 </div>

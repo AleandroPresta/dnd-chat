@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ChatRoom } from '../../../models/chat-room.model';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgFor, NgIf } from '@angular/common';
@@ -15,11 +15,13 @@ export class ChatSidebarComponent {
     // It will handle displaying the list of chat rooms, user information, and other sidebar-related functionalities
 
     @Input() rooms: ChatRoom[] = [];
-    @Input() currentRoom: ChatRoom | null = null;
+    @Input() currentRoomId: number = 0;
     @Input() roomForm!: FormGroup; // TODO use the correct type
     @Input() userId: number = 0;
     @Input() userFirstName: string = '';
     @Input() userLastName: string = '';
+
+    @Output() loadMessages: EventEmitter<number> = new EventEmitter();
 
     showCreateRoomModal = false;
 
@@ -27,6 +29,7 @@ export class ChatSidebarComponent {
 
     joinRoom(roomId: number, userId: number) {
         this.chatService.joinRoom(roomId, userId);
+        this.loadMessages.emit(roomId);
     }
 
     onLogout() {

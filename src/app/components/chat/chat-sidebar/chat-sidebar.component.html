@@ -96,7 +96,7 @@
     <div class="message-container flex-1 overflow-y-auto px-2">
         <div
             *ngFor="let room of rooms"
-            [class.bg-slate-700]="currentRoom?.id === room.id"
+            [class.bg-slate-700]="currentRoomId === room.id"
             (click)="joinRoom(room.id, userId)"
             class="mb-1 flex cursor-pointer flex-col rounded-lg p-2 transition-colors hover:bg-slate-700/70"
         >
