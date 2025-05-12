@@ -24,8 +24,8 @@ export class ChatComponent implements OnInit {
     messageForm: FormGroup;
     @Input() currentUser: User = {
         id: 0,
-        firstName: '',
-        lastName: '',
+        first_name: '',
+        last_name: '',
         email: '',
     };
 
@@ -48,6 +48,8 @@ export class ChatComponent implements OnInit {
     loadMessages() {
         this.chatService.getMessages().subscribe((messages) => {
             this.messages = messages;
+            console.log('[chat.component.ts] Messages loaded:');
+            console.table(this.messages);
             // this.scrollToBottom();
         });
     }

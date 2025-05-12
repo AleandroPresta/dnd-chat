@@ -22,8 +22,8 @@ export class MessageFormComponent {
             const message: Message = {
                 id: Date.now(),
                 content,
-                senderId: 1, // TODO Replace with actual sender ID
-                createdAt: new Date(),
+                user_id: 1, // TODO Replace with actual sender ID
+                created_at: new Date(),
             };
             this.messageSent.emit(message);
         }

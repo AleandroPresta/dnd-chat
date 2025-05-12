@@ -3,6 +3,6 @@ import { User } from './user.model';
 export interface Message {
     id: number;
     content: string;
-    senderId: number;
-    createdAt: Date;
+    user_id: number;
+    created_at: Date;
 }
