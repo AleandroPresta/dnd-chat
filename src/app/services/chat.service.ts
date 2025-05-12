@@ -18,4 +18,8 @@ export class ChatService {
     getMessages(): Observable<Message[]> {
         return this.http.get<Message[]>(this.API_URL);
     }
+
+    sendMessage(message: Message): Observable<Message> {
+        return this.http.post<Message>(this.API_URL, message);
+    }
 }
