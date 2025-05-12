@@ -13,6 +13,7 @@ export class AuthService {
     private currentUserSubject = new BehaviorSubject<User | null>(null);
     public currentUser$ = this.currentUserSubject.asObservable();
     private isBrowser: boolean;
+    private userCache = new Map<number, User>();
 
     constructor(private http: HttpClient) {
         this.isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
@@ -88,6 +89,18 @@ export class AuthService {
     }
 
     getUserById(userId: number): Observable<User> {
-        return this.http.get<User>(`${this.API_URL}/user/${userId}`);
+        if (this.userCache.has(userId)) {
+            // Return cached user as an observable
+            return new Observable<User>((observer) => {
+                observer.next(this.userCache.get(userId)!);
+                observer.complete();
+            });
+        } else {
+            return this.http.get<User>(`${this.API_URL}/user/${userId}`).pipe(
+                tap((user) => {
+                    this.userCache.set(userId, user);
+                })
+            );
+        }
     }
 }
