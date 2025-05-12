@@ -9,8 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
     providedIn: 'root',
 })
 export class AuthService {
-    private API_URL =
-        'https://x8ki-letl-twmt.n7.xano.io/api:Y6FZ87f5/auth/login';
+    private API_URL = 'https://x8ki-letl-twmt.n7.xano.io/api:Y6FZ87f5/auth';
     private currentUserSubject = new BehaviorSubject<User | null>(null);
     public currentUser$ = this.currentUserSubject.asObservable();
     private isBrowser: boolean;
@@ -32,35 +31,37 @@ export class AuthService {
     }
 
     login(email: string, password: string): Observable<any> {
-        return this.http.post<any>(this.API_URL, { email, password }).pipe(
-            tap((response) => {
-                if (response && response.jwt) {
-                    // Store JWT token
-                    const token = response.jwt;
+        return this.http
+            .post<any>(`${this.API_URL}/login`, { email, password })
+            .pipe(
+                tap((response) => {
+                    if (response && response.jwt) {
+                        // Store JWT token
+                        const token = response.jwt;
 
-                    // Create user object from JWT payload or additional user info if provided
-                    // This is a simplified example, actual implementation may vary based on API
-                    const user: User = {
-                        id: response.user?.id || 0,
-                        email: email,
-                        firstName: response.user?.first_name || '',
-                        lastName: response.user?.last_name || '',
-                        token: token,
-                    };
+                        // Create user object from JWT payload or additional user info if provided
+                        // This is a simplified example, actual implementation may vary based on API
+                        const user: User = {
+                            id: response.user?.id || 0,
+                            email: email,
+                            firstName: response.user?.first_name || '',
+                            lastName: response.user?.last_name || '',
+                            token: token,
+                        };
 
-                    // Only store in localStorage if in browser environment
-                    if (this.isBrowser) {
-                        localStorage.setItem('jwtToken', token);
-                        localStorage.setItem(
-                            'currentUser',
-                            JSON.stringify(user)
-                        );
+                        // Only store in localStorage if in browser environment
+                        if (this.isBrowser) {
+                            localStorage.setItem('jwtToken', token);
+                            localStorage.setItem(
+                                'currentUser',
+                                JSON.stringify(user)
+                            );
+                        }
+
+                        this.currentUserSubject.next(user);
                     }
-
-                    this.currentUserSubject.next(user);
-                }
-            })
-        );
+                })
+            );
     }
 
     logout(): void {
@@ -84,5 +85,9 @@ export class AuthService {
 
     get token(): string | null {
         return this.isBrowser ? localStorage.getItem('jwtToken') : null;
+    }
+
+    getUserById(userId: number): Observable<User> {
+        return this.http.get<User>(`${this.API_URL}/user/${userId}`);
     }
 }

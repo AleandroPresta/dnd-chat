@@ -7,13 +7,14 @@ import { CommonModule } from '@angular/common';
 import { Message } from '../../models/message.model';
 import { User } from '../../models/user.model';
 import { MessageFormComponent } from './message-form/message-form.component';
+import { MessageComponent } from './message/message.component';
 
 @Component({
     selector: 'app-chat',
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
     standalone: true,
-    imports: [CommonModule, MessageFormComponent],
+    imports: [CommonModule, MessageFormComponent, MessageComponent],
 })
 export class ChatComponent implements OnInit {
     @Output() logout = new EventEmitter<void>();

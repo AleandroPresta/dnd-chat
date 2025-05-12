@@ -1,6 +1,6 @@
 <div class="h-full bg-white">
     <section *ngFor="let message of messages; trackBy: trackByMessageId">
-        <p>{{ message.content }}</p>
+        <app-message [message]="message"></app-message>
     </section>
     <app-message-form (messageSent)="onSendMessage($event)"></app-message-form>
 </div>
