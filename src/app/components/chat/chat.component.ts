@@ -40,7 +40,6 @@ export class ChatComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('[chat.component.ts] ngOnInit');
         this.loadMessages();
         // this.startMessagePolling(this.userId);
     }
@@ -48,15 +47,11 @@ export class ChatComponent implements OnInit {
     loadMessages() {
         this.chatService.getMessages().subscribe((messages) => {
             this.messages = messages;
-            console.log('[chat.component.ts] Messages loaded:');
-            console.table(this.messages);
             // this.scrollToBottom();
         });
     }
 
     onSendMessage(message: Message): void {
-        console.log(`[chat.component.ts] onSendMessage:`);
-        console.table(message);
         this.messages.push(message);
     }
 

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Message } from '../../../models/message.model';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-message-form',
@@ -11,12 +11,18 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 export class MessageFormComponent {
     @Output() messageSent = new EventEmitter<Message>();
 
-    message = new FormControl('');
+    messageForm = new FormGroup({
+        content: new FormControl(''),
+    });
 
     sendMessage() {
-        if (!this.message.value) {
+        const content = this.messageForm.value.content;
+        if (!content) {
             return;
         }
-        console.log(this.message.value);
+        console.log(content);
+        // Optionally emit the message
+        // this.messageSent.emit({ content } as Message);
+        this.messageForm.reset();
     }
 }
