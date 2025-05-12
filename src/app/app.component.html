@@ -1,4 +1,14 @@
-<div class="min-h-screen bg-slate-100 flex items-center justify-center">
-  <app-auth *ngIf="componentToShow === 'auth'" (authenticated)="onAuthenticated()" class="w-full max-w-md"></app-auth>
-  <app-chat *ngIf="componentToShow === 'chat'" (logout)="onLogout()" class="w-full max-w-4xl"></app-chat>
+<div
+    class="mx-auto flex h-screen w-full flex-col items-center justify-center bg-gray-50 2xl:container"
+>
+    @if (componentToShow === 'auth') {
+        <app-auth (authenticated)="onAuthenticated()" class=""></app-auth>
+    } @else {
+        <app-chat
+            *ngIf="componentToShow === 'chat'"
+            [currentUser]="currentUser"
+            (logout)="onLogout()"
+            class="h-full w-full"
+        ></app-chat>
+    }
 </div>

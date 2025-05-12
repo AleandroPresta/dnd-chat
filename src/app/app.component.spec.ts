@@ -6,23 +6,20 @@ import { provideHttpClient } from '@angular/common/http';
 import { PLATFORM_ID } from '@angular/core';
 
 describe('AppComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        AppComponent,
-        HttpClientTestingModule
-      ],
-      providers: [
-        AuthService,
-        provideHttpClient(),
-        { provide: PLATFORM_ID, useValue: 'browser' }
-      ]
-    }).compileComponents();
-  });
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [AppComponent, HttpClientTestingModule],
+            providers: [
+                AuthService,
+                provideHttpClient(),
+                { provide: PLATFORM_ID, useValue: 'browser' },
+            ],
+        }).compileComponents();
+    });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
+    it('should create the app', () => {
+        const fixture = TestBed.createComponent(AppComponent);
+        const app = fixture.componentInstance;
+        expect(app).toBeTruthy();
+    });
 });
