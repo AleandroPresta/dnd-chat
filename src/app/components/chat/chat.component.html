@@ -1,5 +1,6 @@
 <div class="h-full bg-white">
-    <ng-container *ngFor="let message of messages; trackBy: trackByMessageId">
-    </ng-container>
+    <section *ngFor="let message of messages; trackBy: trackByMessageId">
+        <p>{{ message.content }}</p>
+    </section>
     <app-message-form (messageSent)="onSendMessage($event)"></app-message-form>
 </div>
