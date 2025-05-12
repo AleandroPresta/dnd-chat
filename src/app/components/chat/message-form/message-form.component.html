@@ -1,11 +1,10 @@
-<form #messageForm (onSubmit)="sendMessage()">
+<form (ngSubmit)="sendMessage()" [formGroup]="messageForm">
     <input
         type="text"
         class="form-control"
         placeholder="Type a message..."
-        [formControl]="message"
+        formControlName="content"
         (keyup.enter)="sendMessage()"
     />
-
-    <button type="button" class="btn btn-primary">Send</button>
+    <button type="submit" class="btn btn-primary">Send</button>
 </form>
