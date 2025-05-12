@@ -3,6 +3,7 @@ import { AuthService } from './services/auth.service';
 import { AuthComponent } from './components/auth/auth.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { NgIf } from '@angular/common';
+import { User } from './models/user.model';
 
 @Component({
     selector: 'app-root',
@@ -13,9 +14,12 @@ import { NgIf } from '@angular/common';
 })
 export class AppComponent implements OnInit {
     componentToShow: 'auth' | 'chat' = 'chat'; // auth in production
-    @Input() userId: number = 1; // TODO: Replace with 0 in production
-    @Input() userFirstName: string = 'Alice'; // TODO: Replace with '' in production
-    @Input() userLastName: string = 'Smith'; // TODO: Replace with '' in production
+    currentUser: User = {
+        id: 1,
+        first_name: 'Alice',
+        last_name: 'Smith',
+        email: 'alice@smith.com',
+    };
 
     constructor(private authService: AuthService) {}
 

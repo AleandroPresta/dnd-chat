@@ -1,26 +1,6 @@
-<!-- D&D Chat Application -->
 <div class="h-full bg-white">
-    <div class="h-full md:grid md:grid-cols-5">
-        <app-chat-sidebar
-            [rooms]="rooms"
-            [currentRoom]="currentRoom"
-            [roomForm]="roomForm"
-            (createRoom)="createRoom()"
-            (onLogout)="onLogout()"
-            [userId]="userId"
-            [userFirstName]="userFirstName"
-            [userLastName]="userLastName"
-            class="col-span-1"
-        ></app-chat-sidebar>
-        <!--<app-chat-main
-            [currentRoom]="currentRoom"
-            [messages]="messages"
-            [loading]="loading"
-            [authService]="authService"
-            [messageForm]="messageForm"
-            (sendMessage)="sendMessage()"
-            (leaveRoom)="leaveRoom()"
-            class="hidden md:col-span-4 md:block"
-        ></app-chat-main> -->
-    </div>
+    <section *ngFor="let message of messages; trackBy: trackByMessageId">
+        <app-message [message]="message"></app-message>
+    </section>
+    <app-message-form (messageSent)="onSendMessage($event)"></app-message-form>
 </div>
