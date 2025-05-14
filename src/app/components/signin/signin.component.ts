@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
     standalone: true,
     imports: [CommonModule, ReactiveFormsModule, FormsModule],
 })
-export class SigninComponent {
+export class SigninComponent implements OnInit {
     loginForm: FormGroup;
     error: string = '';
     loading = false;
@@ -25,6 +25,16 @@ export class SigninComponent {
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(6)]],
+            rememberMe: [false], // Add remember me checkbox with default false
+        });
+    }
+
+    ngOnInit(): void {
+        // Check if the user is already signed in and redirect to chat if they are
+        this.authService.isSignedIn().then((isSignedIn) => {
+            if (isSignedIn) {
+                this.router.navigate(['/chat']);
+            }
         });
     }
 
@@ -33,9 +43,9 @@ export class SigninComponent {
         this.loading = true;
 
         if (this.loginForm.valid) {
-            const { email, password } = this.loginForm.value;
+            const { email, password, rememberMe } = this.loginForm.value;
             this.authService
-                .login(email, password)
+                .login(email, password, rememberMe)
                 .then(() => {
                     this.loading = false;
                     this.router.navigate(['/chat']);

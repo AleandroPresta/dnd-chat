@@ -11,4 +11,5 @@ import { CommonModule, DatePipe } from '@angular/common';
 })
 export class MessageComponent {
     @Input() message?: Message;
+    @Input() currentUserId?: string;
 }
