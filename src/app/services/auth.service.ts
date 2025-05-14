@@ -4,12 +4,13 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
 } from 'firebase/auth';
+import { firebaseApp } from '../../../firebase.config';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
-    private auth = getAuth();
+    private auth = getAuth(firebaseApp);
 
     constructor() {}
 
