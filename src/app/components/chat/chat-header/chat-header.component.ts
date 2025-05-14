@@ -12,7 +12,6 @@ import { getAuth, signOut } from 'firebase/auth';
 })
 export class ChatHeaderComponent {
     @Output() logoutEvent = new EventEmitter<void>();
-    logoPath = '/assets/logo.png'; // Define the path to the logo with leading slash
 
     constructor(private router: Router) {}
 
