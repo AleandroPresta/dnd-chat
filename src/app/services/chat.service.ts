@@ -1,63 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Message } from '../models/message.model';
-import { AuthService } from './auth.service';
-import { Observable } from 'rxjs';
-import {
-    catchError,
-    delay,
-    retryWhen,
-    switchMap,
-    throwError,
-    timer,
-} from 'rxjs';
+import { ref, push, onValue, off, DatabaseReference } from 'firebase/database';
+import { database } from '../../../firebase.config'; // Import the database instance we created
 
 @Injectable({
     providedIn: 'root',
 })
 export class ChatService {
-    private API_URL = 'https://x8ki-letl-twmt.n7.xano.io/api:DzvuDCJG/messages';
+    messagesRef: DatabaseReference;
 
-    constructor(
-        private http: HttpClient,
-        private authService: AuthService
-    ) {}
-
-    getMessages(): Observable<Message[]> {
-        return this.http.get<Message[]>(this.API_URL).pipe(
-            retryWhen((errors) =>
-                errors.pipe(
-                    switchMap((error) => {
-                        if (
-                            error?.error?.code ===
-                            'ERROR_CODE_TOO_MANY_REQUESTS'
-                        ) {
-                            console.log('Waiting API limit');
-                            return timer(20000); // wait 20 seconds
-                        }
-                        return throwError(() => error);
-                    })
-                )
-            )
-        );
-    }
-
-    sendMessage(message: Message): Observable<Message> {
-        return this.http.post<Message>(this.API_URL, message).pipe(
-            retryWhen((errors) =>
-                errors.pipe(
-                    switchMap((error) => {
-                        if (
-                            error?.error?.code ===
-                            'ERROR_CODE_TOO_MANY_REQUESTS'
-                        ) {
-                            console.log('Waiting API limit');
-                            return timer(20000); // wait 20 seconds
-                        }
-                        return throwError(() => error);
-                    })
-                )
-            )
-        );
+    constructor() {
+        this.messagesRef = ref(database, 'messages');
     }
 }
