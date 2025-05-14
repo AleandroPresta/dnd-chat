@@ -19,13 +19,19 @@ import { MessageComponent } from './message/message.component';
 import { Subscription } from 'rxjs';
 import { getAuth } from 'firebase/auth';
 import { AuthService } from '../../services/auth.service';
+import { ChatHeaderComponent } from './chat-header/chat-header.component';
 
 @Component({
     selector: 'app-chat',
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, MessageComponent],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        MessageComponent,
+        ChatHeaderComponent,
+    ],
 })
 export class ChatComponent implements OnInit, OnDestroy {
     @Output() logout = new EventEmitter<void>();

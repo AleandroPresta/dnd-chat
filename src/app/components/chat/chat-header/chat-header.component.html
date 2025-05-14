@@ -1,0 +1,17 @@
+<header
+    class="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3 shadow-sm"
+>
+    <!-- Logo and title -->
+    <div class="flex items-center">
+        <img [src]="logoPath" alt="D&D Logo" class="mr-2 h-8 w-8" />
+        <h1 class="text-xl font-bold text-blue-600">D&D Chat</h1>
+    </div>
+
+    <!-- Logout button -->
+    <button
+        (click)="logout()"
+        class="rounded bg-red-500 px-4 py-2 text-white transition duration-200 hover:bg-red-600 focus:outline-none"
+    >
+        Logout
+    </button>
+</header>
