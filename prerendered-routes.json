@@ -1,5 +1,7 @@
 {
   "routes": {
-    "/dnd-chat": {}
+    "/dnd-chat": {},
+    "/dnd-chat/chat": {},
+    "/dnd-chat/signin": {}
   }
 }
