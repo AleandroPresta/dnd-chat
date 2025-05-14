@@ -1,19 +1,18 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AuthService } from './services/auth.service';
-import { AuthComponent } from './components/auth/auth.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { SigninComponent } from './components/signin/signin.component';
 import { NgIf } from '@angular/common';
 import { User } from './models/user.model';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [AuthComponent, ChatComponent, NgIf],
+    imports: [SigninComponent, ChatComponent, NgIf],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-    componentToShow: 'auth' | 'chat' = 'auth'; // auth in production
+    componentToShow: 'signin' | 'chat' = 'signin'; // signin is now default
     currentUser: User = {
         id: 1,
         first_name: 'Alice',
@@ -21,13 +20,8 @@ export class AppComponent implements OnInit {
         email: 'alice@smith.com',
     };
 
-    constructor(private authService: AuthService) {}
-
     ngOnInit(): void {
-        // Check if user is already logged in
-        if (this.authService.isLoggedIn) {
-            this.componentToShow = 'chat';
-        }
+        // You can add logic here if needed
     }
 
     onAuthenticated(): void {
@@ -35,6 +29,6 @@ export class AppComponent implements OnInit {
     }
 
     onLogout(): void {
-        this.componentToShow = 'auth';
+        this.componentToShow = 'signin';
     }
 }
