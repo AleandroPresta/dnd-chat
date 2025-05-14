@@ -1,14 +1,5 @@
 <div
     class="mx-auto flex h-screen w-full flex-col items-center justify-center bg-gray-50 2xl:container"
 >
-    @if (componentToShow === 'signin') {
-        <app-signin (authenticated)="onAuthenticated()" class=""></app-signin>
-    } @else {
-        <app-chat
-            *ngIf="componentToShow === 'chat'"
-            [currentUser]="currentUser"
-            (logout)="onLogout()"
-            class="h-full w-full"
-        ></app-chat>
-    }
+    <router-outlet></router-outlet>
 </div>
