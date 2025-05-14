@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-signin',
@@ -16,11 +17,10 @@ export class SigninComponent {
     error: string = '';
     loading = false;
 
-    @Output() authenticated = new EventEmitter<void>();
-
     constructor(
         private fb: FormBuilder,
-        private authService: AuthService
+        private authService: AuthService,
+        private router: Router
     ) {
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
@@ -38,7 +38,7 @@ export class SigninComponent {
                 .login(email, password)
                 .then(() => {
                     this.loading = false;
-                    this.authenticated.emit();
+                    this.router.navigate(['/chat']);
                 })
                 .catch((error) => {
                     this.loading = false;
