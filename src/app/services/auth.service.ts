@@ -6,6 +6,8 @@ import {
     setPersistence,
     browserSessionPersistence,
     browserLocalPersistence,
+    onAuthStateChanged,
+    User,
 } from 'firebase/auth';
 import { firebaseApp } from '../../../firebase.config';
 
@@ -62,5 +64,26 @@ export class AuthService {
                 console.error('Error during login:', errorCode, errorMessage);
                 throw error;
             });
+    }
+
+    /**
+     * Gets the current user if signed in
+     * @returns Promise that resolves with the current user or null if not signed in
+     */
+    getCurrentUser(): Promise<User | null> {
+        return new Promise((resolve) => {
+            const unsubscribe = onAuthStateChanged(this.auth, (user) => {
+                unsubscribe(); // Unsubscribe once we get the auth state
+                resolve(user);
+            });
+        });
+    }
+
+    /**
+     * Checks if a user is currently signed in
+     * @returns Promise that resolves to true if user is signed in, false otherwise
+     */
+    isSignedIn(): Promise<boolean> {
+        return this.getCurrentUser().then((user) => !!user);
     }
 }
