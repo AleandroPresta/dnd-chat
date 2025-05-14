@@ -31,7 +31,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     messages: Message[] = [];
     messageForm: FormGroup;
-    currentUserId: number = 0;
+    currentUserId: string = '';
     private messageSubscription: Subscription | null = null;
 
     constructor(
@@ -56,9 +56,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         const auth = getAuth();
         const user = auth.currentUser;
         if (user) {
-            // For demo purposes, we're using a simple number conversion from the UID
-            // In a real app, you'd look up the user's ID in your database
-            this.currentUserId = this.hashStringToNumber(user.uid);
+            this.currentUserId = user.uid;
         }
     }
 

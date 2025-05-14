@@ -72,7 +72,7 @@ export class ChatService {
      * @param userId The user ID
      * @returns Promise that resolves when the message is sent
      */
-    sendMessage(content: string, userId: number): Promise<void> {
+    sendMessage(content: string, userId: string): Promise<void> {
         // Create a new unique key under the 'messages' reference
         const newMessageRef = push(this.messagesRef);
 
