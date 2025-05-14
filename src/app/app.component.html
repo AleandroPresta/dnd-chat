@@ -1,8 +1,8 @@
 <div
     class="mx-auto flex h-screen w-full flex-col items-center justify-center bg-gray-50 2xl:container"
 >
-    @if (componentToShow === 'auth') {
-        <app-auth (authenticated)="onAuthenticated()" class=""></app-auth>
+    @if (componentToShow === 'signin') {
+        <app-signin (authenticated)="onAuthenticated()" class=""></app-signin>
     } @else {
         <app-chat
             *ngIf="componentToShow === 'chat'"

@@ -16,7 +16,7 @@ import { MessageComponent } from './message/message.component';
     standalone: true,
     imports: [CommonModule, MessageFormComponent, MessageComponent],
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent {
     @Output() logout = new EventEmitter<void>();
 
     messages: Message[] = [];
@@ -38,82 +38,4 @@ export class ChatComponent implements OnInit {
             content: ['', Validators.required],
         });
     }
-
-    ngOnInit(): void {
-        this.loadMessages();
-        // this.startMessagePolling(this.userId);
-    }
-
-    loadMessages() {
-        this.chatService.getMessages().subscribe((messages) => {
-            this.messages = messages;
-            // this.scrollToBottom();
-        });
-    }
-
-    onSendMessage(messageContent: string): void {
-        if (!messageContent || !this.currentUser.id) {
-            console.error('Message content is empty or user is not logged in.');
-            return;
-        }
-        const newMessage: Message = {
-            content: messageContent,
-            user_id: this.currentUser.id,
-            created_at: new Date(),
-        };
-        this.messages.push(newMessage);
-        this.chatService.sendMessage(newMessage).subscribe((response) => {
-            console.log('Message sent successfully:', response);
-        });
-    }
-
-    onLogout(): void {
-        this.authService.logout();
-        this.logout.emit();
-    }
-
-    trackByMessageId(index: number, message: Message) {
-        return message.id;
-    }
-
-    /* private scrollToBottom(): void {
-        setTimeout(() => {
-            const messageContainer =
-                document.querySelector('.message-container');
-            if (messageContainer) {
-                messageContainer.scrollTop = messageContainer.scrollHeight;
-            }
-        }, 100);
-    }
-
-    private startMessagePolling(roomId: number): void {
-        // Stop any existing polling
-        this.stopMessagePolling();
-
-        // Poll for new messages every 5 seconds
-        this.messagePolling = interval(5000)
-            .pipe(switchMap(() => this.chatService.getMessages()))
-            .subscribe((messages) => {
-                this.messages = messages;
-                // Only scroll if we're already at the bottom
-                const messageContainer =
-                    document.querySelector('.message-container');
-                if (messageContainer) {
-                    const isScrolledToBottom =
-                        messageContainer.scrollHeight -
-                            messageContainer.clientHeight <=
-                        messageContainer.scrollTop + 100;
-                    if (isScrolledToBottom) {
-                        this.scrollToBottom();
-                    }
-                }
-            });
-    } */
-
-    /*private stopMessagePolling(): void {
-        if (this.messagePolling) {
-            this.messagePolling.unsubscribe();
-            this.messagePolling = undefined;
-        }
-    }*/
 }
