@@ -18,6 +18,7 @@ import { Message } from '../../models/message.model';
 import { MessageComponent } from './message/message.component';
 import { Subscription } from 'rxjs';
 import { getAuth } from 'firebase/auth';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'app-chat',
@@ -31,12 +32,13 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     messages: Message[] = [];
     messageForm: FormGroup;
-    currentUserId: number = 0;
+    currentUserId: string = '';
     private messageSubscription: Subscription | null = null;
 
     constructor(
         private fb: FormBuilder,
-        private chatService: ChatService
+        private chatService: ChatService,
+        private authService: AuthService
     ) {
         this.messageForm = this.fb.group({
             content: ['', Validators.required],
@@ -56,9 +58,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         const auth = getAuth();
         const user = auth.currentUser;
         if (user) {
-            // For demo purposes, we're using a simple number conversion from the UID
-            // In a real app, you'd look up the user's ID in your database
-            this.currentUserId = this.hashStringToNumber(user.uid);
+            this.currentUserId = user.uid;
         }
     }
 
@@ -86,13 +86,20 @@ export class ChatComponent implements OnInit, OnDestroy {
     sendMessage(): void {
         if (this.messageForm.valid) {
             const content = this.messageForm.value.content;
-            this.chatService
-                .sendMessage(content, this.currentUserId)
-                .then(() => {
-                    this.messageForm.reset();
+            this.authService
+                .getUserNameById(this.currentUserId)
+                .then((userName: string) => {
+                    this.chatService
+                        .sendMessage(content, this.currentUserId, userName)
+                        .then(() => {
+                            this.messageForm.reset();
+                        })
+                        .catch((error) => {
+                            console.error('Error sending message:', error);
+                        });
                 })
                 .catch((error) => {
-                    console.error('Error sending message:', error);
+                    console.error('Error fetching user name:', error);
                 });
         }
     }
