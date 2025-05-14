@@ -1,12 +1,26 @@
 <div class="container flex h-screen flex-col bg-white lg:w-[60vw]">
     <app-chat-header></app-chat-header>
     <div class="flex-1 overflow-auto p-4">
-        <section *ngFor="let message of messages">
-            <app-message
-                [message]="message"
-                [currentUserId]="currentUserId"
-            ></app-message>
-        </section>
+        @defer (when messages.length > 0) {
+            <section *ngFor="let message of messages">
+                <app-message
+                    [message]="message"
+                    [currentUserId]="currentUserId"
+                ></app-message>
+            </section>
+        } @placeholder {
+            <!-- Simple spinner while loading -->
+            <div class="flex h-full items-center justify-center">
+                <div
+                    class="h-12 w-12 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"
+                ></div>
+            </div>
+        } @error {
+            <!-- Error message -->
+            <div class="text-red-500">
+                <p>Error loading messages. Please try again later.</p>
+            </div>
+        }
     </div>
 
     <div class="border-t p-4">
