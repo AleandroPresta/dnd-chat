@@ -92,8 +92,8 @@ export class AuthService {
 
                     // If you only want a *specific* value under that user (like just the username)
                     const userData = snapshot.val();
-                    if (userData && userData.username) {
-                        return userData.username;
+                    if (userData) {
+                        return userData;
                     } else {
                         console.log('Username not found for user', userId);
                         alert('Username not found for user ' + userId);
