@@ -12,7 +12,6 @@ import { CommonModule, DatePipe } from '@angular/common';
 export class MessageComponent {
     @Input() message?: Message;
     @Input() currentUserId?: string;
-
     /**
      * Checks if a date is today
      * @param date The date to check
