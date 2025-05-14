@@ -69,17 +69,17 @@ export class ChatService {
     /**
      * Send a new message
      * @param content The message content
-     * @param userId The user ID
+     * @param username The username
      * @returns Promise that resolves when the message is sent
      */
-    sendMessage(content: string, userId: string): Promise<void> {
+    sendMessage(content: string, userName: string): Promise<void> {
         // Create a new unique key under the 'messages' reference
         const newMessageRef = push(this.messagesRef);
 
         // Prepare data for the new message
         const messageData = {
             content: content,
-            user_id: userId,
+            username: userName,
             created_at: new Date().toISOString(),
         };
 

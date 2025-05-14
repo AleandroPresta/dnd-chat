@@ -10,6 +10,10 @@ import {
     User,
 } from 'firebase/auth';
 import { firebaseApp } from '../../../firebase.config';
+import { DatabaseReference, ref } from '@angular/fire/database';
+import { database } from '../../../firebase.config';
+import { user } from '@angular/fire/auth';
+import { child, get } from 'firebase/database';
 
 @Injectable({
     providedIn: 'root',
@@ -17,25 +21,10 @@ import { firebaseApp } from '../../../firebase.config';
 export class AuthService {
     private auth = getAuth(firebaseApp);
 
-    constructor() {}
+    usernameRef: DatabaseReference;
 
-    register(email: string, password: string): Promise<any> {
-        return createUserWithEmailAndPassword(this.auth, email, password)
-            .then((userCredential) => {
-                // Signed in
-                const user = userCredential.user;
-                return user;
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.error(
-                    'Error during registration:',
-                    errorCode,
-                    errorMessage
-                );
-                throw error;
-            });
+    constructor() {
+        this.usernameRef = ref(database, 'users');
     }
 
     login(
@@ -85,5 +74,46 @@ export class AuthService {
      */
     isSignedIn(): Promise<boolean> {
         return this.getCurrentUser().then((user) => !!user);
+    }
+
+    getUserNameById(userId: string): Promise<string> {
+        const userSpecificRef = child(this.usernameRef, userId);
+
+        return get(userSpecificRef)
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    // snapshot.val() will contain all the data for that specific user ID (e.g., { username: '...', email: '...' })
+                    console.log(
+                        'Data found for user',
+                        userId,
+                        ':',
+                        snapshot.val()
+                    );
+
+                    // If you only want a *specific* value under that user (like just the username)
+                    const userData = snapshot.val();
+                    if (userData && userData.username) {
+                        return userData.username;
+                    } else {
+                        console.log('Username not found for user', userId);
+                        alert('Username not found for user ' + userId);
+                        throw new Error('Username not found');
+                    }
+                } else {
+                    console.log('No data available for user:', userId);
+                    alert('No data available for user ' + userId);
+                    throw new Error('No data available');
+                }
+            })
+            .catch((error) => {
+                console.error(
+                    'Error fetching data for user',
+                    userId,
+                    ':',
+                    error
+                );
+                alert('Error fetching data for user ' + userId + ': ' + error);
+                throw error;
+            });
     }
 }
