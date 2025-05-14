@@ -8,7 +8,7 @@
     <div class="mb-1 flex items-center justify-between">
         <span class="font-semibold">{{ message?.username }}</span>
         <span class="text-xs text-gray-500">{{
-            message?.created_at | date: 'short'
+            message?.created_at | date: 'dd/MM/yy HH:mm'
         }}</span>
     </div>
     <p class="message-content">{{ message?.content }}</p>
