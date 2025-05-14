@@ -3,24 +3,24 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-auth',
-    templateUrl: './auth.component.html',
-    styleUrls: ['./auth.component.scss'],
+    selector: 'app-signin',
+    templateUrl: './signin.component.html',
+    styleUrls: ['./signin.component.scss'],
     standalone: true,
     imports: [CommonModule, ReactiveFormsModule, FormsModule],
 })
-export class AuthComponent {
+export class SigninComponent {
     loginForm: FormGroup;
     error: string = '';
     loading = false;
 
-    @Output() authenticated = new EventEmitter<void>();
-
     constructor(
         private fb: FormBuilder,
-        private authService: AuthService
+        private authService: AuthService,
+        private router: Router
     ) {
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
@@ -34,18 +34,16 @@ export class AuthComponent {
 
         if (this.loginForm.valid) {
             const { email, password } = this.loginForm.value;
-            this.authService.login(email, password).subscribe({
-                next: () => {
+            this.authService
+                .login(email, password)
+                .then(() => {
                     this.loading = false;
-                    this.authenticated.emit();
-                },
-                error: (error) => {
-                    this.error =
-                        error.error?.message ||
-                        'Login failed. Please try again.';
+                    this.router.navigate(['/chat']);
+                })
+                .catch((error) => {
                     this.loading = false;
-                },
-            });
+                    this.error = error.message;
+                });
         }
     }
 }
