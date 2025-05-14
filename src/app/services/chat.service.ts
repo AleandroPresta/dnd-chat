@@ -11,6 +11,7 @@ import {
 import { database } from '../../../firebase.config'; // Import the database instance we created
 import { Message } from '../models/message.model';
 import { BehaviorSubject } from 'rxjs';
+import { user } from '@angular/fire/auth';
 
 @Injectable({
     providedIn: 'root',
@@ -45,6 +46,7 @@ export class ChatService {
                     messageList.push({
                         id: parseInt(key),
                         content: msg.content,
+                        username: msg.username,
                         user_id: msg.user_id,
                         created_at: new Date(msg.created_at),
                     });
@@ -69,10 +71,14 @@ export class ChatService {
     /**
      * Send a new message
      * @param content The message content
-     * @param userId The user ID
+     * @param username The username
      * @returns Promise that resolves when the message is sent
      */
-    sendMessage(content: string, userId: number): Promise<void> {
+    sendMessage(
+        content: string,
+        userId: string,
+        userName: string
+    ): Promise<void> {
         // Create a new unique key under the 'messages' reference
         const newMessageRef = push(this.messagesRef);
 
@@ -80,6 +86,7 @@ export class ChatService {
         const messageData = {
             content: content,
             user_id: userId,
+            username: userName,
             created_at: new Date().toISOString(),
         };
 
