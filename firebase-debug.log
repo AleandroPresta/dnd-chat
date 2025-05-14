@@ -1,0 +1,21 @@
+[debug] [2025-05-14T10:18:04.188Z] ----------------------------------------------------------------------
+[debug] [2025-05-14T10:18:04.192Z] Command:       /home/aleandro/.nvm/versions/node/v22.1.0/bin/node /home/aleandro/.nvm/versions/node/v22.1.0/bin/firebase init
+[debug] [2025-05-14T10:18:04.192Z] CLI Version:   14.3.1
+[debug] [2025-05-14T10:18:04.192Z] Platform:      linux
+[debug] [2025-05-14T10:18:04.192Z] Node Version:  v22.1.0
+[debug] [2025-05-14T10:18:04.193Z] Time:          Wed May 14 2025 12:18:04 GMT+0200 (Central European Summer Time)
+[debug] [2025-05-14T10:18:04.193Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-05-14T10:18:04.199Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-05-14T10:18:04.199Z] > authorizing via signed-in user (all96p@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /home/aleandro/Desktop/Programming Projects/dnd-chat
+
