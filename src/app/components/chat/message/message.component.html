@@ -7,9 +7,18 @@
 >
     <div class="mb-1 flex items-center justify-between">
         <span class="font-semibold">{{ message?.username }}</span>
-        <span class="text-xs text-gray-500">{{
-            message?.created_at | date: 'short'
-        }}</span>
+        <span class="text-xs text-gray-500">
+            <ng-container *ngIf="message?.created_at">
+                <ng-container
+                    *ngIf="isToday(message?.created_at); else fullDate"
+                >
+                    {{ message?.created_at | date: 'HH:mm' }}
+                </ng-container>
+                <ng-template #fullDate>
+                    {{ message?.created_at | date: 'dd/MM/yy HH:mm' }}
+                </ng-template>
+            </ng-container>
+        </span>
     </div>
     <p class="message-content">{{ message?.content }}</p>
 </div>
