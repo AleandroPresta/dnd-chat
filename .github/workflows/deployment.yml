@@ -38,7 +38,15 @@ jobs:
             - name: Install angular-cli-ghpages
               run: npm install -g angular-cli-ghpages
 
+            # Set environment variables explicitly before build
+            - name: Set Environment Variables
+              run: |
+                  echo "Setting up environment variables for the build process"
+                  node -e "const fs=require('fs');const path=require('path');const envFile=path.join(process.cwd(),'src/assets/env.js');let content=fs.readFileSync(envFile,'utf8');content=content.replace('\${HUGGINGFACE_API_KEY}','${{ secrets.HUGGINGFACE_API_KEY }}');fs.writeFileSync(envFile,content);console.log('Environment variables injected!');"
+
             - name: Build
+              env:
+                  HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
               run: npm run build -- --configuration production --base-href "https://aleandropresta.github.io/dnd-chat/"
 
             # Check the directory structure after build
