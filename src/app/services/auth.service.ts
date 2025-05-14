@@ -3,6 +3,9 @@ import {
     getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
+    setPersistence,
+    browserSessionPersistence,
+    browserLocalPersistence,
 } from 'firebase/auth';
 import { firebaseApp } from '../../../firebase.config';
 
@@ -33,8 +36,21 @@ export class AuthService {
             });
     }
 
-    login(email: string, password: string): Promise<any> {
-        return signInWithEmailAndPassword(this.auth, email, password)
+    login(
+        email: string,
+        password: string,
+        rememberMe: boolean = false
+    ): Promise<any> {
+        // Set the appropriate persistence type based on the rememberMe flag
+        const persistenceType = rememberMe
+            ? browserLocalPersistence
+            : browserSessionPersistence;
+
+        // First set the persistence, then sign in
+        return setPersistence(this.auth, persistenceType)
+            .then(() => {
+                return signInWithEmailAndPassword(this.auth, email, password);
+            })
             .then((userCredential) => {
                 // Signed in
                 const user = userCredential.user;

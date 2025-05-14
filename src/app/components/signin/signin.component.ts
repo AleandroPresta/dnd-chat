@@ -25,6 +25,7 @@ export class SigninComponent {
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(6)]],
+            rememberMe: [false], // Add remember me checkbox with default false
         });
     }
 
@@ -33,9 +34,9 @@ export class SigninComponent {
         this.loading = true;
 
         if (this.loginForm.valid) {
-            const { email, password } = this.loginForm.value;
+            const { email, password, rememberMe } = this.loginForm.value;
             this.authService
-                .login(email, password)
+                .login(email, password, rememberMe)
                 .then(() => {
                     this.loading = false;
                     this.router.navigate(['/chat']);
