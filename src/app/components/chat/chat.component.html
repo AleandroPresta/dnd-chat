@@ -1,6 +1,25 @@
-<div class="h-full bg-white">
-    <section *ngFor="let message of messages">
-        <app-message [message]="message"></app-message>
-    </section>
-    <app-message-form></app-message-form>
+<div class="flex h-full flex-col bg-white">
+    <div class="flex-1 overflow-auto p-4">
+        <section *ngFor="let message of messages">
+            <app-message [message]="message"></app-message>
+        </section>
+    </div>
+
+    <div class="border-t p-4">
+        <form [formGroup]="messageForm" (ngSubmit)="sendMessage()" class="flex">
+            <input
+                type="text"
+                formControlName="content"
+                placeholder="Type a message..."
+                class="flex-1 rounded-l border p-2 focus:outline-none"
+            />
+            <button
+                type="submit"
+                [disabled]="!messageForm.valid"
+                class="rounded-r bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            >
+                Send
+            </button>
+        </form>
+    </div>
 </div>

@@ -1,3 +1,15 @@
-<p>{{ userFirstName }} {{ userLastName }}</p>
-<p>{{ message?.created_at | date: 'short' }}:</p>
-<p>{{ message?.content }}</p>
+<div
+    class="message-container mb-4 rounded-lg p-3"
+    [ngClass]="{
+        'self-end bg-blue-100': message?.user_id === 1,
+        'bg-gray-100': message?.user_id !== 1,
+    }"
+>
+    <div class="mb-1 flex items-center justify-between">
+        <span class="font-semibold">User {{ message?.user_id }}</span>
+        <span class="text-xs text-gray-500">{{
+            message?.created_at | date: 'short'
+        }}</span>
+    </div>
+    <p class="message-content">{{ message?.content }}</p>
+</div>
