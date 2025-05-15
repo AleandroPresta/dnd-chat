@@ -7,24 +7,38 @@ import { Command } from '../../../models/command.model';
     standalone: true,
     imports: [CommonModule],
     template: `
-        <div *ngIf="isVisible" class="command-menu-container">
-            <div class="command-menu">
-                <div class="command-header">Available Commands</div>
-                <div class="commands-list">
+        <div
+            *ngIf="isVisible"
+            class="absolute bottom-full left-0 z-20 w-full pb-2"
+        >
+            <div
+                class="border-base-300 flex max-h-64 flex-col overflow-hidden rounded-xl border bg-white shadow-xl"
+            >
+                <div
+                    class="text-base-content/70 bg-base-300 border-base-300 border-b px-4 py-2 text-sm font-semibold"
+                >
+                    Available Commands
+                </div>
+                <div class="overflow-y-auto py-1">
                     <div
                         *ngFor="let command of filteredCommands; let i = index"
-                        class="command-item"
-                        [class.active]="selectedIndex === i"
+                        class="flex cursor-pointer select-none flex-col gap-0.5 px-4 py-2 transition-colors"
+                        [ngClass]="{
+                            'bg-primary/20 text-primary': selectedIndex === i,
+                            'hover:bg-base-300': selectedIndex !== i,
+                        }"
                         (click)="selectCommand(command)"
                     >
-                        <div class="command-name">{{ command.name }}</div>
-                        <div class="command-description">
-                            {{ command.description }}
-                        </div>
+                        <span class="text-base-content font-medium">{{
+                            command.name
+                        }}</span>
+                        <span class="text-base-content/60 text-xs">{{
+                            command.description
+                        }}</span>
                     </div>
                     <div
                         *ngIf="filteredCommands.length === 0"
-                        class="no-commands"
+                        class="text-base-content/50 px-4 py-3 text-center text-sm italic"
                     >
                         No commands match your search
                     </div>
@@ -32,69 +46,6 @@ import { Command } from '../../../models/command.model';
             </div>
         </div>
     `,
-    styles: [
-        `
-            .command-menu-container {
-                position: absolute;
-                bottom: 100%;
-                left: 0;
-                width: 100%;
-                padding-bottom: 8px;
-            }
-
-            .command-menu {
-                background-color: #2a303c;
-                border-radius: 8px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-                overflow: hidden;
-                max-height: 250px;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .command-header {
-                padding: 10px 16px;
-                font-weight: 600;
-                color: #a6adba;
-                background-color: #242933;
-                border-bottom: 1px solid #333c4d;
-            }
-
-            .commands-list {
-                overflow-y: auto;
-                padding: 4px 0;
-            }
-
-            .command-item {
-                padding: 8px 16px;
-                cursor: pointer;
-                transition: background-color 0.2s;
-            }
-
-            .command-item:hover,
-            .command-item.active {
-                background-color: #374151;
-            }
-
-            .command-name {
-                font-weight: 500;
-                color: #e2e8f0;
-                margin-bottom: 2px;
-            }
-
-            .command-description {
-                font-size: 0.85rem;
-                color: #94a3b8;
-            }
-
-            .no-commands {
-                padding: 12px 16px;
-                color: #94a3b8;
-                text-align: center;
-                font-style: italic;
-            }
-        `,
-    ],
 })
 export class CommandMenuComponent implements OnInit {
     @Input() isVisible: boolean = false;

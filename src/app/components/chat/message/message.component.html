@@ -2,6 +2,7 @@
     class="message-container mb-4 rounded-lg p-3"
     [ngClass]="{
         'self-end bg-blue-100': message?.user_id === currentUserId,
+        'bg-red-300': message?.username === 'Dungeonmaster-bot',
         'bg-gray-100': message?.user_id !== currentUserId,
     }"
 >

@@ -1,4 +1,4 @@
-<div class="message-form-container">
+<div class="message-form-container my-2 ml-2">
     <app-command-menu
         *ngIf="showCommandMenu"
         [isVisible]="showCommandMenu"
@@ -21,8 +21,4 @@
         />
         <button type="submit" class="btn btn-primary">Send</button>
     </form>
-
-    <div *ngIf="!showCommandMenu" class="command-hint">
-        Type / to access commands
-    </div>
 </div>
