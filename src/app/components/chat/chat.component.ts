@@ -20,6 +20,7 @@ import { Subscription } from 'rxjs';
 import { getAuth } from 'firebase/auth';
 import { AuthService } from '../../services/auth.service';
 import { ChatHeaderComponent } from './chat-header/chat-header.component';
+import { MessageFormComponent } from './message-form/message-form.component';
 
 @Component({
     selector: 'app-chat',
@@ -31,6 +32,7 @@ import { ChatHeaderComponent } from './chat-header/chat-header.component';
         ReactiveFormsModule,
         MessageComponent,
         ChatHeaderComponent,
+        MessageFormComponent,
     ],
 })
 export class ChatComponent implements OnInit, OnDestroy {
@@ -99,6 +101,29 @@ export class ChatComponent implements OnInit, OnDestroy {
                         .sendMessage(content, this.currentUserId, userName)
                         .then(() => {
                             this.messageForm.reset();
+                        })
+                        .catch((error) => {
+                            console.error('Error sending message:', error);
+                        });
+                })
+                .catch((error) => {
+                    console.error('Error fetching user name:', error);
+                });
+        }
+    }
+
+    /**
+     * Handle message sent from the message-form component
+     */
+    onMessageSent(content: string): void {
+        if (content) {
+            this.authService
+                .getUserNameById(this.currentUserId)
+                .then((userName: string) => {
+                    this.chatService
+                        .sendMessage(content, this.currentUserId, userName)
+                        .then(() => {
+                            // Message sent successfully
                         })
                         .catch((error) => {
                             console.error('Error sending message:', error);
