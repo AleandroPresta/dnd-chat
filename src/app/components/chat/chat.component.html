@@ -23,21 +23,9 @@
         }
     </div>
 
-    <div class="border-t p-4">
-        <form [formGroup]="messageForm" (ngSubmit)="sendMessage()" class="flex">
-            <input
-                type="text"
-                formControlName="content"
-                placeholder="Type a message..."
-                class="flex-1 rounded-l border p-2 focus:outline-none"
-            />
-            <button
-                type="submit"
-                [disabled]="!messageForm.valid"
-                class="rounded-r bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-            >
-                Send
-            </button>
-        </form>
+    <div class="message-form-wrapper">
+        <app-message-form
+            (messageSent)="onMessageSent($event)"
+        ></app-message-form>
     </div>
 </div>

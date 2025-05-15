@@ -1,10 +1,28 @@
-<form (ngSubmit)="sendMessage()" [formGroup]="messageForm">
-    <input
-        type="text"
-        class="form-control"
-        placeholder="Type a message..."
-        formControlName="content"
-        (keyup.enter)="sendMessage()"
-    />
-    <button type="submit" class="btn btn-primary">Send</button>
-</form>
+<div class="message-form-container">
+    <app-command-menu
+        *ngIf="showCommandMenu"
+        [isVisible]="showCommandMenu"
+        [commands]="commands"
+        [filterText]="messageForm.get('content')?.value || ''"
+        (commandSelected)="onCommandSelected($event)"
+    ></app-command-menu>
+
+    <form
+        (ngSubmit)="sendMessage()"
+        [formGroup]="messageForm"
+        class="message-form"
+    >
+        <input
+            #messageInput
+            type="text"
+            class="form-control"
+            placeholder="Type a message... (type / for commands)"
+            formControlName="content"
+        />
+        <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+
+    <div *ngIf="!showCommandMenu" class="command-hint">
+        Type / to access commands
+    </div>
+</div>
